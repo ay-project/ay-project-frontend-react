@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import LoginContainer from './containers/LoginContainer'
+import LoginContainer from "./containers/LoginContainer";
 import { Router, Route } from "react-router-dom";
-import history from './history';
+import history from "./history";
 import Home from "./pages/Home";
+import Game from "./pages/Game";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -10,24 +11,32 @@ class AppRouter extends Component {
 
     this.state = {
       token: null
-    }
+    };
   }
 
   getToken = (user, pwd) => {
-    setTimeout(() => { this.setState({ token: `user: ${user}, pwd: ${pwd}`}); console.log(this.state.token)}, 1000)
-    history.push("/Home")
-  }
-  
+    setTimeout(() => {
+      this.setState({ token: `user: ${user}, pwd: ${pwd}` });
+      console.log(this.state.token);
+    }, 1000);
+    history.push("/Home");
+  };
+
   render() {
     return (
       <Router history={history}>
         <div>
-          <Route path="/" exact component={() => <LoginContainer onSubmitLogin={this.getToken} />} />
+          <Route
+            path="/"
+            exact
+            component={() => <LoginContainer onSubmitLogin={this.getToken} />}
+          />
           <Route path="/Home/" component={Home} />
+          <Route path="/Game/" component={Game} />
         </div>
       </Router>
-    ) 
+    );
   }
-};
+}
 
 export default AppRouter;
