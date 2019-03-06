@@ -5,10 +5,10 @@ import classNames from "classnames";
 import LoginForm from "./LoginForm";
 import ProjectInfo from "../../components/ProjectInfo";
 
-const imgUrl = "https://s3.us-east-2.amazonaws.com/ay-dev-assests/general/log-paper.jpg";
+const imgUrl =
+  "https://s3.us-east-2.amazonaws.com/ay-dev-assests/general/log-paper.jpg";
 const styles = theme => ({
   root: {
-    //backgroundImage: "url(" + imgUrl + ")",
     minHeight: "100vh"
   },
   main: {
@@ -20,13 +20,7 @@ const styles = theme => ({
 
 class Login extends Component {
   render() {
-    const {
-      onChangeUsername,
-      onChangePwd,
-      onSubmit,
-      classes,
-      className
-    } = this.props;
+    const { onSubmit, classes } = this.props;
 
     return (
       <div className={classNames(classes.root)}>

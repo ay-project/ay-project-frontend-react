@@ -38,8 +38,4 @@ theme.overrides = {
 }
 
 
-
-
 export default createMuiTheme(theme);
-
-
