@@ -8,15 +8,20 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import { Grid } from "@material-ui/core";
 import TurnTimer from "../TurnTimer";
+import EndTurnSquare from "../EndTurnSquare";
+import PlayerAvatar from "../PlayerAvatar";
+import CardCounter from "../CardCounter";
+import AdversaryStatusBar from "../AdversaryStatusBar";
 
 const styles = theme => ({
   toolbar: {
     minHeight: "15vh",
     maxHeight: "15vh",
-    background: "#2E3B55",
+    backgroundColor: "rgba(0, 0, 0, 0)",
     justifyContent: "center",
     backgroundSize: "cover",
-    overflow: "hidden"
+    overflow: "hidden",
+    shadows: ["none"]
   }
 });
 
@@ -31,25 +36,22 @@ class UpperStatusBar extends Component {
     const { classes } = this.props;
     return (
       <div>
-        <AppBar position="static" className={classes.toolbar}>
-          <Grid container spacing={24}>
-            <Grid item xs={2} style={{ backgroundColor: "black" }}>
+        <AppBar position="static" className={classes.toolbar} elevation={0}>
+          <Grid container spacing={48} justify="center">
+            <Grid item xs={2} style={{ padding: 15 }}>
               {" "}
-              <p>Adversary status</p>
+              <AdversaryStatusBar />
             </Grid>
-            <Grid item xs={1} style={{ backgroundColor: "cyan" }}>
-              {" "}
-              <p>Card number</p>
+            <Grid item xs style={{ padding: 3 }}>
+              <CardCounter />
             </Grid>
-            <Grid item xs={6} style={{ backgroundColor: "blue" }}>
-              {" "}
-              <p>Adversary avatar</p>
+            <Grid item xs={6} style={{ padding: 3 }}>
+              <PlayerAvatar />
             </Grid>
-            <Grid item xs={2} style={{ backgroundColor: "pink" }}>
-              {" "}
-              <p>End turn</p>
+            <Grid item xs={2} style={{ padding: 3 }}>
+              <EndTurnSquare />
             </Grid>
-            <Grid item xs={1} style={{ padding: 5 }}>
+            <Grid item xs style={{ padding: 5 }}>
               <TurnTimer />
             </Grid>
           </Grid>

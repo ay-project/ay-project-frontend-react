@@ -5,11 +5,16 @@ import "./timer.css";
 const styles = theme => ({});
 
 const iconStyle = { size: 2, color: "black" };
-const totaltime = 10;
+const totaltime = 30;
 
 class TurnTimer extends Component {
   constructor(props) {
     super();
+    this.resetTimer();
+    this.myCounter();
+  }
+
+  resetTimer = () => {
     this.count = 0;
     this.state = {
       timer_style: {
@@ -17,8 +22,7 @@ class TurnTimer extends Component {
           "linear-gradient(0deg, transparent 50%, #FAFAD2 50%),linear-gradient(0deg, #FAFAD2 50%, transparent 50%)"
       }
     };
-    this.myCounter();
-  }
+  };
 
   updateTimer = percent => {
     var deg;
