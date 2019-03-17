@@ -5,11 +5,10 @@ import Image from "./blm.png";
 
 const styles = theme => ({
   root: {
-    backgroundImage: `url(${Image})`,
-    //"url(https://wallpaperplay.com/walls/full/a/0/4/179353.jpg)",
+    backgroundImage: `url(${Image})`, // TODO image is prop and s3 hosted
     minHeight: "14vh",
     maxHeight: "14vh",
-    backgroundPosition: "55% 25%",
+    backgroundPosition: "55% 25%", // TODO remove once images are created
     borderRadius: "35px",
     border: "2px solid #FAFAD2"
   }
@@ -21,8 +20,8 @@ class PlayerAvater extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-    return <Button fullWidth className={classes.root} />;
+    const { classes, clickAction } = this.props;
+    return <Button fullWidth className={classes.root} onClick={clickAction} />;
   }
 }
 

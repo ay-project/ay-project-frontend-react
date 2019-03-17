@@ -7,7 +7,12 @@ const styles = theme => ({
     minHeight: "14vh",
     maxHeight: "14vh",
     borderRadius: "35px",
-    border: "2px solid #FAFAD2"
+    border: "2px solid #FAFAD2",
+    color: "#FAFAD2",
+    backgroundColor: "#0094cc",
+    "&:hover": {
+      backgroundColor: "#40c4ff"
+    }
   }
 });
 
@@ -17,13 +22,13 @@ class EndTurnSquare extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, clickAction } = this.props;
     return (
       <Button
         variant="contained"
-        color="primary"
         className={classes.button}
         fullWidth
+        onClick={clickAction}
       >
         End Turn
       </Button>

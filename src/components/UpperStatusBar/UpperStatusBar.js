@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
 import { Grid } from "@material-ui/core";
 import TurnTimer from "../TurnTimer";
 import EndTurnSquare from "../EndTurnSquare";
@@ -25,34 +20,39 @@ const styles = theme => ({
   }
 });
 
-const iconStyle = { size: 2, color: "black" };
-
 class UpperStatusBar extends Component {
   constructor(props) {
     super();
   }
 
   render() {
-    const { classes } = this.props;
+    const {
+      classes,
+      endTurnAction,
+      faceAction,
+      adversaryHP,
+      adversaryHand,
+      adversaryMP
+    } = this.props;
     return (
       <div>
         <AppBar position="static" className={classes.toolbar} elevation={0}>
           <Grid container spacing={48} justify="center">
             <Grid item xs={2} style={{ padding: 15 }}>
               {" "}
-              <AdversaryStatusBar />
+              <AdversaryStatusBar mp={adversaryMP} hp={adversaryHP} />
             </Grid>
             <Grid item xs style={{ padding: 3 }}>
-              <CardCounter />
+              <CardCounter cardCount={adversaryHand} />
             </Grid>
             <Grid item xs={6} style={{ padding: 3 }}>
-              <PlayerAvatar />
+              <PlayerAvatar clickAction={faceAction} />
             </Grid>
             <Grid item xs={2} style={{ padding: 3 }}>
-              <EndTurnSquare />
+              <EndTurnSquare clickAction={endTurnAction} />
             </Grid>
             <Grid item xs style={{ padding: 5 }}>
-              <TurnTimer />
+              <TurnTimer endAction={endTurnAction} time={10} />
             </Grid>
           </Grid>
         </AppBar>

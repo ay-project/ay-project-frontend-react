@@ -1,50 +1,28 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
 import { Grid } from "@material-ui/core";
-const iconStyle = { size: 2, color: "black" };
+import StatusGauge from "../StatusGauge";
 
 const styles = theme => ({
-  root: {
-    color: "#FAFAD2"
-  },
-  hprow: {
-    padding: "10px 20px",
-    backgroundImage: "linear-gradient(to left, #A0DC60 , #286709)",
-    borderRadius: "25px",
-    border: "2px solid #FAFAD2"
-  },
-  mprow: {
-    padding: "10px 20px",
-    backgroundImage: "linear-gradient(to left, #DD86AD , #773139)",
-    borderRadius: "25px",
-    border: "2px solid #FAFAD2"
-  }
+  root: {}
 });
 
 class AdversaryStatusBar extends Component {
   constructor(props) {
-    super();
-    this.state = {
-      HP: 30,
-      MP: 0
-    };
+    super(props);
+    this.state = {};
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, hp, mp } = this.props;
     return (
       <div className={classes.root}>
         <Grid container spacing={16} direction="column">
           <Grid item xs>
-            <div className={classes.hprow}>HP {this.state.HP}</div>
+            <StatusGauge type={"hp"} value={hp} maxValue={30} />
           </Grid>
           <Grid item xs>
-            <div className={classes.mprow}>MP {this.state.MP}</div>
+            <StatusGauge type={"mp"} value={mp} maxValue={10} />
           </Grid>
         </Grid>
       </div>

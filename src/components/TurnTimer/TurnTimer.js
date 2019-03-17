@@ -4,14 +4,12 @@ import "./timer.css";
 
 const styles = theme => ({});
 
-const iconStyle = { size: 2, color: "black" };
-const totaltime = 30;
-
 class TurnTimer extends Component {
   constructor(props) {
-    super();
+    super(props);
     this.resetTimer();
     this.myCounter();
+    this.totaltime = this.props.time;
   }
 
   resetTimer = () => {
@@ -26,8 +24,8 @@ class TurnTimer extends Component {
 
   updateTimer = percent => {
     var deg;
-    if (percent < totaltime / 2) {
-      deg = 90 + (360 * percent) / totaltime;
+    if (percent < this.totaltime / 2) {
+      deg = 90 + (360 * percent) / this.totaltime;
       this.setState({
         timer_style: {
           backgroundImage:
@@ -36,8 +34,8 @@ class TurnTimer extends Component {
             "deg, transparent 50%, #FAFAD2 50%),linear-gradient(90deg, #FAFAD2 50%, transparent 50%)"
         }
       });
-    } else if (percent >= totaltime / 2) {
-      deg = -90 + (360 * percent) / totaltime;
+    } else if (percent >= this.totaltime / 2) {
+      deg = -90 + (360 * percent) / this.totaltime;
       this.setState({
         timer_style: {
           backgroundImage:
@@ -54,7 +52,10 @@ class TurnTimer extends Component {
     self.interval_counter = setInterval(() => {
       self.count += 1;
       self.updateTimer(self.count);
-      if (self.count == totaltime) clearInterval(self.interval_counter);
+      if (self.count == this.totaltime) {
+        clearInterval(self.interval_counter);
+        this.props.endAction();
+      }
     }, 1000);
   };
 

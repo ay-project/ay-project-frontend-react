@@ -5,9 +5,9 @@ class Player {
     this.deck = data.deck;
     this.hand = [];
     this.board = [];
-    this.HP = 30;
+    this.hp = 30;
     this.manapool = 0;
-    this.mana = 0;
+    this.mp = 0;
   }
 }
 
