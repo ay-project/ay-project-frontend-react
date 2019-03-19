@@ -63,8 +63,7 @@ class TurnTimer extends Component {
     const { classes } = this.props;
     return (
       <div className="pie" style={this.state.timer_style}>
-        <span className="block" />
-        <span id="time">{this.count}</span>
+        <div id="time">{this.count}</div>
       </div>
     );
   }

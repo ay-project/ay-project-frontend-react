@@ -4,8 +4,8 @@ import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
   button: {
-    minHeight: "14vh",
-    maxHeight: "14vh",
+    minHeight: "99%",
+    maxHeight: "99%",
     borderRadius: "35px",
     border: "2px solid #FAFAD2",
     color: "#FAFAD2",

@@ -2,26 +2,17 @@
   width: 100px;
   height: 100px;
   display: block;
-  position: relative;
   border-radius: 50%;
   background-color: #d4af37;
   border: 2px solid #fafad2;
-  float: left;
-}
-.pie .block {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  display: block;
-  border-radius: 50%;
+  margin: auto;
+  text-align: center;
 }
 
 #time {
   font-size: 3em;
-  position: absolute;
-  top: 23%;
-  left: 24%;
   color: #d4af37;
+  margin-top: 20%;
   text-shadow: 0.05em 0 #fafad2, 0 0.05em #fafad2, -0.05em 0 #fafad2,
     0 -0.05em #fafad2, -0.05em -0.05em #fafad2, -0.05em 0.05em #fafad2,
     0.05em -0.05em #fafad2, 0.05em 0.05em #fafad2;

@@ -3,6 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import GameData from "../../Classes/GameData";
 import Player from "../../Classes/Player";
 import UpperStatusBar from "../../components/UpperStatusBar";
+import PlayArea from "../../components/PlayArea";
 
 const styles = theme => ({
   root: {
@@ -14,12 +15,17 @@ const styles = theme => ({
 class Game extends Component {
   constructor() {
     super();
+    const game = new GameData({
+      id: 1,
+      adversary: new Player({ id: 1, tag: "Livvy", deck: 11 }),
+      local: new Player({ id: 2, tag: "phil714", deck: 12 })
+    });
+    game.adversary.board.push(...["asd", "asd", "asd"]);
+    game.local.board.push(
+      ...["asd", "asd", "asd", "asdasd", "asdasd", "asdasd"]
+    );
     this.state = {
-      game: new GameData({
-        id: 1,
-        adversary: new Player({ id: 1, tag: "Livvy", deck: [] }),
-        local: new Player({ id: 2, tag: "phil714", deck: [] })
-      })
+      game: game
     };
   }
 
@@ -53,6 +59,14 @@ class Game extends Component {
     console.log("clicked adv");
   };
 
+  targetAdversaryCard = cardIndex => {
+    console.log("clicked : " + cardIndex);
+  };
+
+  targetLocalCard = cardIndex => {
+    console.log("clicked : " + cardIndex);
+  };
+
   render() {
     const { token, classes } = this.props;
     return (
@@ -63,6 +77,14 @@ class Game extends Component {
           adversaryHand={this.state.game.adversary.hand.length}
           faceAction={this.setAdvFaceSelect}
           endTurnAction={this.endTurn}
+        />
+        <PlayArea
+          adversaryBoard={this.state.game.adversary.board}
+          adversaryDeck={this.state.game.adversary.deck}
+          localBoard={this.state.game.local.board}
+          localDeck={this.state.game.local.deck}
+          adversaryCardSelectAction={this.targetAdversaryCard}
+          localCardSelectAction={this.targetLocalCard}
         />
       </div>
     );
