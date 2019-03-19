@@ -11,56 +11,47 @@ const styles = theme => ({
   }
 });
 
-let game = new GameData({
-  id: 1,
-  adversary: new Player({ id: 1, tag: "Livvy", deck: [] }),
-  local: new Player({ id: 2, tag: "Phil714", deck: [] })
-});
-
 class Game extends Component {
   constructor() {
     super();
     this.state = {
-      game: game
+      game: new GameData({
+        id: 1,
+        adversary: new Player({ id: 1, tag: "Livvy", deck: [] }),
+        local: new Player({ id: 2, tag: "phil714", deck: [] })
+      })
     };
-
-    this.updateAdvHP = this.updateAdvHP.bind(this);
-    this.updateAdvMP = this.updateAdvMP.bind(this);
-    this.endTurn = this.endTurn.bind(this);
-    this.setAdvFaceSelect = this.setAdvFaceSelect.bind(this);
   }
 
-  updateAdvHP(value) {
+  updateAdvHP = value => {
     console.log("update hp");
+    const game = { ...this.state.game };
     game.adversary.hp += value;
-    this.setGame();
-  }
+    this.setState({ game });
+  };
 
-  updateAdvMP(value) {
+  updateAdvMP = value => {
     console.log("update mp");
+    const game = { ...this.state.game };
     game.adversary.mp += value;
-    this.setGame();
-  }
+    this.setState({ game });
+  };
 
-  endTurn() {
+  endTurn = () => {
     console.log("end turn");
-  }
+    this.updateAdvMP(2);
+  };
 
-  updateHand(value) {
+  updateHand = value => {
     console.log("update hand");
+    const game = { ...this.state.game };
     for (var i = 0; i < value; i++) game.adversary.hand.push("");
-    this.setGame();
-  }
+    this.setState({ game });
+  };
 
-  setAdvFaceSelect() {
+  setAdvFaceSelect = () => {
     console.log("clicked adv");
-  }
-
-  setGame() {
-    this.setState({
-      game: game
-    });
-  }
+  };
 
   render() {
     const { token, classes } = this.props;

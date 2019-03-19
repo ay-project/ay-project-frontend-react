@@ -16,11 +16,6 @@ const styles = theme => ({
 });
 
 class CardCounter extends Component {
-  constructor(props) {
-    super();
-    this.state = {};
-  }
-
   render() {
     const { classes, cardCount } = this.props;
     return <div className={classes.root}>{cardCount}</div>;
