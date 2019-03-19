@@ -17,12 +17,17 @@ const styles = theme => ({
 
 class PlayCard extends Component {
   render() {
-    const { classes, clickAction, index } = this.props;
+    const { classes, clickAction, index, selected } = this.props;
+    let style = {};
+    if (selected) {
+      style = { filter: "brightness(125%)" };
+    }
     return (
       <Button
         fullWidth
         className={classes.root}
         onClick={event => clickAction(index)}
+        style={style}
       />
     );
   }

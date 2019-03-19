@@ -38,7 +38,8 @@ class PlayArea extends Component {
       localBoard,
       localDeck,
       adversaryCardSelectAction,
-      localCardSelectAction
+      localCardSelectAction,
+      midClickAction
     } = this.props;
 
     return (
@@ -50,6 +51,7 @@ class PlayArea extends Component {
               <CardArea
                 cards={adversaryBoard}
                 clickAction={adversaryCardSelectAction}
+                midClickAction={midClickAction}
               />
             </Grid>
             <Grid item xs={1} className={classes.grid}>
@@ -63,6 +65,7 @@ class PlayArea extends Component {
               <CardArea
                 cards={localBoard}
                 clickAction={localCardSelectAction}
+                midClickAction={midClickAction}
               />
             </Grid>
             <Grid item xs={1} className={classes.grid}>

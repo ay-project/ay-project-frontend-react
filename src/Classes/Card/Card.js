@@ -15,6 +15,7 @@ class Card {
     this.cost = data.specs.cost;
     this.type = data.type;
     this.uid = data.uid;
+    this.selected = false;
   }
 }
 

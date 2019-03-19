@@ -1,42 +1,62 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import PlayCard from "../PlayCard";
-import { Grid } from "@material-ui/core";
+import { Grid, Button } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
     minHeight: "100%",
     maxHeight: "100%",
     padding: "0vh",
-    margin: "0vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
+    margin: "0vh"
   }
 });
 
 class CardArea extends Component {
-  generateBoard = (board, clickAction) => {
+  generateBoard = (board, clickAction, midClickAction) => {
     let cards = [];
+    cards.push(
+      <Grid item xs>
+        <Button
+          fullWidth
+          style={{ height: "100%" }}
+          onClick={() => {
+            midClickAction(0);
+          }}
+        />
+      </Grid>
+    );
     for (let i = 0; i < board.length; i++) {
-      //Inner loop to create children
       cards.push(
-        <Grid item xs>
-          <PlayCard clickAction={clickAction} index={i} />{" "}
+        <Grid item xs={1}>
+          <PlayCard
+            clickAction={clickAction}
+            index={i}
+            selected={board[i].selected}
+          />
         </Grid>
       );
-
-      //Create the parent and add the children
+      cards.push(
+        <Grid item xs>
+          <Button
+            fullWidth
+            style={{ height: "100%" }}
+            onClick={() => {
+              midClickAction(i + 1);
+            }}
+          />
+        </Grid>
+      );
     }
     return cards;
   };
 
   render() {
-    const { classes, clickAction, cards } = this.props;
+    const { classes, clickAction, cards, midClickAction } = this.props;
     return (
       <div className={classes.root}>
         <Grid container spacing={0} justify={"center"}>
-          {this.generateBoard(cards, clickAction)}
+          {this.generateBoard(cards, clickAction, midClickAction)}
         </Grid>
       </div>
     );

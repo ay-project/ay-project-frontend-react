@@ -16,7 +16,8 @@ const styles = theme => ({
     justifyContent: "center",
     backgroundSize: "cover",
     overflow: "hidden",
-    shadows: ["none"]
+    shadows: ["none"],
+    padding: "2vh"
   }
 });
 
