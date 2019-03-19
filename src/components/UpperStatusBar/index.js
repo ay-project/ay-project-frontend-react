@@ -1,2 +1,1 @@
-import UpperStatusBar from "./UpperStatusBar";
-export default UpperStatusBar;
+export { default } from "./UpperStatusBar";

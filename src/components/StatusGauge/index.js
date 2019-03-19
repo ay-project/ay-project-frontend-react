@@ -1,2 +1,1 @@
-import StatusGauge from "./StatusGauge";
-export default StatusGauge;
+export { default } from "./StatusGauge";

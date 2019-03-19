@@ -8,11 +8,6 @@ const styles = theme => ({
 });
 
 class AdversaryStatusBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
     const { classes, hp, mp } = this.props;
     return (

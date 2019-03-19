@@ -1,2 +1,1 @@
-import AdversaryStatusBar from "./AdversaryStatusBar";
-export default AdversaryStatusBar;
+export { default } from "./AdversaryStatusBar";

@@ -1,2 +1,1 @@
-import EndTurnSquare from "./EndTurnSquare";
-export default EndTurnSquare;
+export { default } from "./EndTurnSquare";

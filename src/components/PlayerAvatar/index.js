@@ -1,2 +1,1 @@
-import PlayerAvatar from "./PlayerAvatar";
-export default PlayerAvatar;
+export { default } from "./PlayerAvatar";

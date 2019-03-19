@@ -1,2 +1,1 @@
-import ProjectInfo from "./ProjectInfo";
-export default ProjectInfo;
+export { default } from "./ProjectInfo";

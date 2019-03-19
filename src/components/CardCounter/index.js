@@ -1,2 +1,1 @@
-import CardCounter from "./CardCounter";
-export default CardCounter;
+export { default } from "./CardCounter";

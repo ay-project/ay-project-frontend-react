@@ -1,2 +1,1 @@
-import TurnTimer from "./TurnTimer";
-export default TurnTimer;
+export { default } from "./TurnTimer";
