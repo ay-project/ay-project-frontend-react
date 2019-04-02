@@ -10,13 +10,14 @@ import AdversaryStatusBar from "../AdversaryStatusBar";
 
 const styles = theme => ({
   toolbar: {
-    minHeight: "15vh",
-    maxHeight: "15vh",
+    minHeight: "16vh",
+    maxHeight: "16vh",
     backgroundColor: "rgba(0, 0, 0, 0)",
     justifyContent: "center",
     backgroundSize: "cover",
     overflow: "hidden",
-    shadows: ["none"]
+    shadows: ["none"],
+    padding: "2vh"
   }
 });
 
@@ -37,7 +38,7 @@ class UpperStatusBar extends Component {
     return (
       <div>
         <AppBar position="static" className={classes.toolbar} elevation={0}>
-          <Grid container spacing={48} justify="center">
+          <Grid container spacing={40} justify="center">
             <Grid item xs={2} style={{ padding: 15 }}>
               {" "}
               <AdversaryStatusBar mp={adversaryMP} hp={adversaryHP} />
