@@ -17,7 +17,8 @@ const styles = theme => ({
     backgroundSize: "cover",
     overflow: "hidden",
     shadows: ["none"],
-    padding: "2vh"
+    padding: "5vh",
+    margin: "0vh 0vh 2vh 0vh"
   }
 });
 
@@ -38,7 +39,7 @@ class UpperStatusBar extends Component {
     return (
       <div>
         <AppBar position="static" className={classes.toolbar} elevation={0}>
-          <Grid container spacing={40} justify="center">
+          <Grid container justify="center">
             <Grid item xs={2} style={{ padding: 15 }}>
               {" "}
               <AdversaryStatusBar mp={adversaryMP} hp={adversaryHP} />
@@ -46,7 +47,7 @@ class UpperStatusBar extends Component {
             <Grid item xs style={{ padding: 3 }}>
               <CardCounter cardCount={adversaryHand} />
             </Grid>
-            <Grid item xs={6} style={{ padding: 3 }}>
+            <Grid item xs={6}>
               <PlayerAvatar clickAction={faceAction} />
             </Grid>
             <Grid item xs={2} style={{ padding: 3 }}>

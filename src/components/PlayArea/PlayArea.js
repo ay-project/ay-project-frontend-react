@@ -6,8 +6,8 @@ import Deck from "../Deck";
 
 const styles = theme => ({
   root: {
-    minHeight: "46vh",
-    maxHeight: "46vh",
+    minHeight: "39vh",
+    maxHeight: "39vh",
     backgroundColor: "#E8CA92",
     margin: "0vh 4vh",
     borderRadius: "35px"

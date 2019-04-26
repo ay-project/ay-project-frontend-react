@@ -6,8 +6,8 @@ import Image from "./blm.png";
 const styles = theme => ({
   root: {
     backgroundImage: `url(${Image})`, // TODO image is prop and s3 hosted
-    minHeight: "99%",
-    maxHeight: "99%",
+    minHeight: "100%",
+    maxHeight: "100%",
     backgroundPosition: "55% 25%", // TODO remove once images are created
     borderRadius: "35px",
     border: "2px solid #FAFAD2"

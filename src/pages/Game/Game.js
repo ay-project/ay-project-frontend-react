@@ -5,6 +5,7 @@ import Player from "../../Classes/Player";
 import UpperStatusBar from "../../components/UpperStatusBar";
 import PlayArea from "../../components/PlayArea";
 import Card from "../../Classes/Card";
+import HandArea from "../../components/HandArea";
 
 const defaultCardData = {
   id: 1,
@@ -45,6 +46,14 @@ class Game extends Component {
       ...[
         new Card(defaultCardData),
         new Card(defaultCardData),
+        new Card(defaultCardData),
+        new Card(defaultCardData),
+        new Card(defaultCardData),
+        new Card(defaultCardData)
+      ]
+    );
+    game.local.hand.push(
+      ...[
         new Card(defaultCardData),
         new Card(defaultCardData),
         new Card(defaultCardData),
@@ -125,6 +134,10 @@ class Game extends Component {
     console.log(`clicked in between ${index} and ${index + 1}`);
   };
 
+  handCardSelectAction = cardIndex => {
+    console.log("clicked : " + cardIndex);
+  };
+
   render() {
     const { token, classes } = this.props;
     const { game } = this.state;
@@ -145,6 +158,10 @@ class Game extends Component {
           adversaryCardSelectAction={this.targetAdversaryCard}
           localCardSelectAction={this.targetLocalCard}
           midClickAction={this.midClickAction}
+        />
+        <HandArea
+          hand={game.local.hand}
+          handSelectAction={this.handCardSelectAction}
         />
       </div>
     );
