@@ -15,17 +15,18 @@ const styles = theme => ({
 class CardArea extends Component {
   generateBoard = (board, clickAction, midClickAction) => {
     let cards = [];
-    cards.push(
-      <Grid item xs>
-        <Button
-          fullWidth
-          style={{ height: "100%" }}
-          onClick={() => {
-            midClickAction(0);
-          }}
-        />
-      </Grid>
-    );
+    if (midClickAction !== null)
+      cards.push(
+        <Grid item xs>
+          <Button
+            fullWidth
+            style={{ height: "100%" }}
+            onClick={() => {
+              midClickAction(0);
+            }}
+          />
+        </Grid>
+      );
     for (let i = 0; i < board.length; i++) {
       cards.push(
         <Grid item xs={1}>
@@ -36,17 +37,18 @@ class CardArea extends Component {
           />
         </Grid>
       );
-      cards.push(
-        <Grid item xs>
-          <Button
-            fullWidth
-            style={{ height: "100%" }}
-            onClick={() => {
-              midClickAction(i + 1);
-            }}
-          />
-        </Grid>
-      );
+      if (midClickAction !== null)
+        cards.push(
+          <Grid item xs>
+            <Button
+              fullWidth
+              style={{ height: "100%" }}
+              onClick={() => {
+                midClickAction(i + 1);
+              }}
+            />
+          </Grid>
+        );
     }
     return cards;
   };
