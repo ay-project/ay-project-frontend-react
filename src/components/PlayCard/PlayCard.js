@@ -4,7 +4,6 @@ import { Button } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
-    backgroundImage: `url("https://s3.us-east-2.amazonaws.com/ay-dev-assests/cards/phcard.png")`,
     minHeight: "170px",
     maxHeight: "170px",
     minWidth: "114px",
@@ -17,10 +16,17 @@ const styles = theme => ({
 
 class PlayCard extends Component {
   render() {
-    const { classes, clickAction, index, selected } = this.props;
-    let style = {};
+    const { classes, clickAction, index, selected, card } = this.props;
+    let style = { backgroundImage: `url("${card.img}")` };
+    if (card.img == null) {
+      style.minHeight = "20px";
+      style.maxHeight = "20px";
+      style.backgroundColor = "#5577AF";
+    }
     if (selected) {
-      style = { filter: "brightness(125%)" };
+      style = {
+        filter: "brightness(125%)"
+      };
     }
     return (
       <Button

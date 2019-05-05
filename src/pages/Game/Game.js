@@ -6,11 +6,12 @@ import UpperStatusBar from "../../components/UpperStatusBar";
 import PlayArea from "../../components/PlayArea";
 import Card from "../../Classes/Card";
 import HandArea from "../../components/HandArea";
+import BottomStatusBar from "../../components/BottomStatusBar";
 
 const defaultCardData = {
   id: 1,
   name: "ok",
-  img: "none",
+  img: "https://s3.us-east-2.amazonaws.com/ay-dev-assests/cards/phcard.png",
   type: "spell",
   effects: "none",
   specs: {
@@ -49,11 +50,18 @@ class Game extends Component {
         new Card(defaultCardData),
         new Card(defaultCardData),
         new Card(defaultCardData),
+        new Card(defaultCardData),
         new Card(defaultCardData)
       ]
     );
     game.local.hand.push(
       ...[
+        new Card(defaultCardData),
+        new Card(defaultCardData),
+        new Card(defaultCardData),
+        new Card(defaultCardData),
+        new Card(defaultCardData),
+        new Card(defaultCardData),
         new Card(defaultCardData),
         new Card(defaultCardData),
         new Card(defaultCardData),
@@ -150,6 +158,7 @@ class Game extends Component {
           faceAction={this.setAdvFaceSelect}
           endTurnAction={this.endTurn}
         />
+        <HandArea hand={game.adversary.hand} handSelectAction={null} />
         <PlayArea
           adversaryBoard={game.adversary.board}
           adversaryDeck={game.adversary.deck}
@@ -162,6 +171,13 @@ class Game extends Component {
         <HandArea
           hand={game.local.hand}
           handSelectAction={this.handCardSelectAction}
+        />
+        <BottomStatusBar
+          adversaryHP={game.adversary.hp}
+          adversaryMP={game.adversary.mp}
+          adversaryHand={game.adversary.hand}
+          faceAction={this.setAdvFaceSelect}
+          endTurnAction={this.endTurn}
         />
       </div>
     );
