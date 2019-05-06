@@ -166,6 +166,17 @@ class Game extends Component {
 
   handleSwapCards = () => {
     this.setState({ swapDialogOpened: false });
+    const game = { ...this.state.game };
+    /// Tempo
+    let swaps = [];
+    for (let card of game.local.hand) {
+      if (card.selected) {
+        swaps.push(card.id);
+        card.selected = false;
+      }
+    }
+    console.log(`Cards to swap : ${swaps}`);
+    //
   };
 
   render() {

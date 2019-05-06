@@ -7,15 +7,9 @@ const styles = theme => ({
     background: `no-repeat`,
     backgroundSize: "contain",
     backgroundColor: "#d3b885",
-    margin: "10px",
     minHeight: "37vh",
     maxHeight: "37vh",
-    fontSize: 60,
-    color: "#d4af37",
-    textAlign: "center",
-    borderRadius: "35px",
-    textShadow:
-      "0.025em 0 #fafad2, 0 0.025em #fafad2, -0.025em 0 #fafad2,0 -0.025em #fafad2, -0.025em -0.025em #fafad2, -0.025em 0.025em #fafad2,0.025em -0.025em #fafad2, 0.025em 0.025em #fafad2"
+    borderRadius: "35px"
   }
 });
 
@@ -29,12 +23,14 @@ class CardPreview extends Component {
       style.filter = "brightness(125%)";
     }
     return (
-      <Button
-        fullWidth
-        className={classes.root}
-        style={style}
-        onClick={event => clickAction(index)}
-      />
+      <div style={{ marginLeft: "20px" }}>
+        <Button
+          fullWidth
+          className={classes.root}
+          style={style}
+          onClick={event => clickAction(index)}
+        />
+      </div>
     );
   }
 }

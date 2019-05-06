@@ -12,8 +12,7 @@ import CardPreview from "../CardPreview";
 const styles = theme => ({
   root: {},
   cardPreview: {
-    minHeight: "39vh",
-    maxHeight: "39vh"
+    marginLeft: "5px"
   }
 });
 
@@ -22,7 +21,7 @@ class CardSelectScreen extends Component {
     super();
   }
 
-  generateBoard = (board, clickAction) => {
+  generateBoard = (board, clickAction, style) => {
     let cards = [];
     for (let i = 0; i < board.length; i++) {
       cards.push(
@@ -53,7 +52,7 @@ class CardSelectScreen extends Component {
         <DialogContent>
           <DialogContentText>
             <Grid container spacing={1}>
-              {this.generateBoard(cards, clickAction)}
+              {this.generateBoard(cards, clickAction, classes.cardPreview)}
             </Grid>
           </DialogContentText>
           <DialogActions>
