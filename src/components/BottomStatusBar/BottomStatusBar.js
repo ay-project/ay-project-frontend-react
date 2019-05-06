@@ -6,7 +6,7 @@ import TurnTimer from "../TurnTimer";
 import EndTurnSquare from "../EndTurnSquare";
 import PlayerAvatar from "../PlayerAvatar";
 import CardCounter from "../CardCounter";
-import AdversaryStatusBar from "../AdversaryStatusBar";
+import StatusBar from "../StatusBar";
 import HeroPower from "../HeroPower";
 
 const styles = theme => ({
@@ -29,7 +29,7 @@ class BottomStatusBar extends Component {
   }
 
   render() {
-    const { classes, faceAction, adversaryHP, adversaryMP } = this.props;
+    const { classes, faceAction, localHP, localMP, localTag } = this.props;
     return (
       <div>
         <AppBar position="static" className={classes.toolbar} elevation={0}>
@@ -38,11 +38,11 @@ class BottomStatusBar extends Component {
               <HeroPower clickAction={faceAction} />
             </Grid>
             <Grid item xs={6}>
-              <PlayerAvatar clickAction={faceAction} />
+              <PlayerAvatar clickAction={faceAction} tag={localTag} />
             </Grid>
             <Grid item xs />
             <Grid item xs={3} style={{ padding: 15 }}>
-              <AdversaryStatusBar mp={adversaryMP} hp={adversaryHP} />
+              <StatusBar mp={localMP} hp={localHP} />
             </Grid>
           </Grid>
         </AppBar>

@@ -24,9 +24,7 @@ class PlayCard extends Component {
       style.backgroundColor = "#5577AF";
     }
     if (selected) {
-      style = {
-        filter: "brightness(125%)"
-      };
+      style.filter = "brightness(125%)";
     }
     return (
       <Button

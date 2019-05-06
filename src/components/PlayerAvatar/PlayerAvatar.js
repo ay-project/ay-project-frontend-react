@@ -20,8 +20,12 @@ class PlayerAvater extends Component {
   }
 
   render() {
-    const { classes, clickAction } = this.props;
-    return <Button fullWidth className={classes.root} onClick={clickAction} />;
+    const { classes, clickAction, tag } = this.props;
+    return (
+      <Button fullWidth className={classes.root} onClick={clickAction}>
+        {tag}
+      </Button>
+    );
   }
 }
 

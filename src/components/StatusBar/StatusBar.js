@@ -7,7 +7,7 @@ const styles = theme => ({
   root: {}
 });
 
-class AdversaryStatusBar extends Component {
+class StatusBar extends Component {
   render() {
     const { classes, hp, mp } = this.props;
     return (
@@ -25,4 +25,4 @@ class AdversaryStatusBar extends Component {
   }
 }
 
-export default withStyles(styles)(AdversaryStatusBar);
+export default withStyles(styles)(StatusBar);

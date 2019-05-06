@@ -71,7 +71,8 @@ class Game extends Component {
     this.state = {
       game: game,
       currentLocalSelection: false,
-      currentAdvSelection: false
+      currentAdvSelection: false,
+      currentHandSelection: false
     };
   }
 
@@ -110,6 +111,11 @@ class Game extends Component {
     console.log("clicked adv");
   };
 
+  /**Action when face is targetted */
+  setLocalFaceSelect = () => {
+    console.log("clicked local");
+  };
+
   /**Toogle the selected adversary card */
   targetAdversaryCard = cardIndex => {
     console.log("clicked : " + cardIndex);
@@ -144,6 +150,15 @@ class Game extends Component {
 
   handCardSelectAction = cardIndex => {
     console.log("clicked : " + cardIndex);
+    const game = { ...this.state.game };
+    let currentHandSelection = this.state.currentHandSelection;
+    let targetState = !game.local.hand[cardIndex].selected;
+    if (currentHandSelection !== false) {
+      game.local.hand[currentHandSelection].selected = false;
+    }
+    game.local.hand[cardIndex].selected = targetState;
+    currentHandSelection = cardIndex;
+    this.setState({ game, currentHandSelection });
   };
 
   render() {
@@ -155,6 +170,7 @@ class Game extends Component {
           adversaryHP={game.adversary.hp}
           adversaryMP={game.adversary.mp}
           adversaryHand={game.adversary.hand}
+          adversaryTag={game.adversary.tag}
           faceAction={this.setAdvFaceSelect}
           endTurnAction={this.endTurn}
         />
@@ -173,11 +189,10 @@ class Game extends Component {
           handSelectAction={this.handCardSelectAction}
         />
         <BottomStatusBar
-          adversaryHP={game.adversary.hp}
-          adversaryMP={game.adversary.mp}
-          adversaryHand={game.adversary.hand}
-          faceAction={this.setAdvFaceSelect}
-          endTurnAction={this.endTurn}
+          localHP={game.local.hp}
+          localMP={game.local.mp}
+          localTag={game.local.tag}
+          faceAction={this.setLocalFaceSelect}
         />
       </div>
     );

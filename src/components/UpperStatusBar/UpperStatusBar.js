@@ -33,8 +33,8 @@ class UpperStatusBar extends Component {
       endTurnAction,
       faceAction,
       adversaryHP,
-      adversaryHand,
-      adversaryMP
+      adversaryMP,
+      adversaryTag
     } = this.props;
     return (
       <div>
@@ -44,17 +44,11 @@ class UpperStatusBar extends Component {
               <AdversaryStatusBar mp={adversaryMP} hp={adversaryHP} />
             </Grid>
             <Grid item xs={6}>
-              <PlayerAvatar clickAction={faceAction} />
+              <PlayerAvatar clickAction={faceAction} tag={adversaryTag} />
             </Grid>
-
             <Grid item xs={2} style={{ padding: 3 }}>
               <EndTurnSquare clickAction={endTurnAction} />
             </Grid>
-            {/* 
-            <Grid item xs style={{ padding: 3 }}>
-              <CardCounter cardCount={adversaryHand} />
-            </Grid>
-            */}
             <Grid item xs style={{ padding: 5 }}>
               <TurnTimer endAction={endTurnAction} time={10} />
             </Grid>
