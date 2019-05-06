@@ -6,7 +6,8 @@ import TurnTimer from "../TurnTimer";
 import EndTurnSquare from "../EndTurnSquare";
 import PlayerAvatar from "../PlayerAvatar";
 import CardCounter from "../CardCounter";
-import AdversaryStatusBar from "../AdversaryStatusBar";
+import StatusBar from "../StatusBar";
+import HeroPower from "../HeroPower";
 
 const styles = theme => ({
   toolbar: {
@@ -18,39 +19,30 @@ const styles = theme => ({
     overflow: "hidden",
     shadows: ["none"],
     padding: "5vh",
-    margin: "0vh 0vh 0vh 0vh"
+    margin: "0vh 0vh 2vh 0vh"
   }
 });
 
-class UpperStatusBar extends Component {
+class BottomStatusBar extends Component {
   constructor(props) {
     super();
   }
 
   render() {
-    const {
-      classes,
-      endTurnAction,
-      faceAction,
-      adversaryHP,
-      adversaryMP,
-      adversaryTag
-    } = this.props;
+    const { classes, faceAction, localHP, localMP, localTag } = this.props;
     return (
       <div>
         <AppBar position="static" className={classes.toolbar} elevation={0}>
           <Grid container justify="center">
-            <Grid item xs={3} style={{ padding: 15 }}>
-              <AdversaryStatusBar mp={adversaryMP} hp={adversaryHP} />
+            <Grid item xs={3} style={{ paddingRight: 5 }}>
+              <HeroPower clickAction={faceAction} />
             </Grid>
             <Grid item xs={6}>
-              <PlayerAvatar clickAction={faceAction} tag={adversaryTag} />
+              <PlayerAvatar clickAction={faceAction} tag={localTag} />
             </Grid>
-            <Grid item xs={2} style={{ padding: 3 }}>
-              <EndTurnSquare clickAction={endTurnAction} />
-            </Grid>
-            <Grid item xs style={{ padding: 5 }}>
-              <TurnTimer endAction={endTurnAction} time={10} />
+            <Grid item xs />
+            <Grid item xs={3} style={{ padding: 15 }}>
+              <StatusBar mp={localMP} hp={localHP} />
             </Grid>
           </Grid>
         </AppBar>
@@ -59,4 +51,4 @@ class UpperStatusBar extends Component {
   }
 }
 
-export default withStyles(styles)(UpperStatusBar);
+export default withStyles(styles)(BottomStatusBar);

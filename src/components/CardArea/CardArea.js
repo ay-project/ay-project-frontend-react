@@ -15,40 +15,58 @@ const styles = theme => ({
 class CardArea extends Component {
   generateBoard = (board, clickAction, midClickAction) => {
     let cards = [];
-    if (midClickAction !== null)
-      cards.push(
-        <Grid item xs>
-          <Button
-            fullWidth
-            style={{ height: "100%" }}
-            onClick={() => {
-              midClickAction(0);
-            }}
-          />
-        </Grid>
-      );
-    for (let i = 0; i < board.length; i++) {
-      cards.push(
-        <Grid item xs={1}>
-          <PlayCard
-            clickAction={clickAction}
-            index={i}
-            selected={board[i].selected}
-          />
-        </Grid>
-      );
-      if (midClickAction !== null)
+    if (isNaN(board)) {
+      if (midClickAction !== null) {
         cards.push(
           <Grid item xs>
             <Button
               fullWidth
               style={{ height: "100%" }}
               onClick={() => {
-                midClickAction(i + 1);
+                midClickAction(0);
               }}
             />
           </Grid>
         );
+      }
+      for (let i = 0; i < board.length; i++) {
+        cards.push(
+          <Grid item xs={1}>
+            <PlayCard
+              clickAction={clickAction}
+              index={i}
+              selected={board[i].selected}
+              card={board[i]}
+            />
+          </Grid>
+        );
+        if (midClickAction !== null) {
+          cards.push(
+            <Grid item xs>
+              <Button
+                fullWidth
+                style={{ height: "100%" }}
+                onClick={() => {
+                  midClickAction(i + 1);
+                }}
+              />
+            </Grid>
+          );
+        }
+      }
+    } else {
+      for (let i = 0; i < board; i++) {
+        cards.push(
+          <Grid item xs={1}>
+            <PlayCard
+              clickAction={() => {}}
+              index={i}
+              selected={false}
+              card={{ img: null }}
+            />
+          </Grid>
+        );
+      }
     }
     return cards;
   };
