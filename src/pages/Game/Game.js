@@ -7,6 +7,7 @@ import PlayArea from "../../components/PlayArea";
 import Card from "../../Classes/Card";
 import HandArea from "../../components/HandArea";
 import BottomStatusBar from "../../components/BottomStatusBar";
+import CardSelectScreen from "../../components/CardSelectScreen";
 
 const defaultCardData = {
   id: 1,
@@ -59,12 +60,6 @@ class Game extends Component {
         new Card(defaultCardData),
         new Card(defaultCardData),
         new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
         new Card(defaultCardData)
       ]
     );
@@ -72,7 +67,8 @@ class Game extends Component {
       game: game,
       currentLocalSelection: false,
       currentAdvSelection: false,
-      currentHandSelection: false
+      currentHandSelection: false,
+      swapDialogOpened: true
     };
   }
 
@@ -161,11 +157,28 @@ class Game extends Component {
     this.setState({ game, currentHandSelection });
   };
 
+  swapCardSelectAction = cardIndex => {
+    console.log("clicked : " + cardIndex);
+    const game = { ...this.state.game };
+    game.local.hand[cardIndex].selected = !game.local.hand[cardIndex].selected;
+    this.setState({ game });
+  };
+
+  handleSwapCards = () => {
+    this.setState({ swapDialogOpened: false });
+  };
+
   render() {
     const { token, classes } = this.props;
-    const { game } = this.state;
+    const { game, swapDialogOpened } = this.state;
     return (
       <div className={classes.root}>
+        <CardSelectScreen
+          open={swapDialogOpened}
+          handleClose={this.handleSwapCards}
+          cards={game.local.hand}
+          clickAction={this.swapCardSelectAction}
+        />
         <UpperStatusBar
           adversaryHP={game.adversary.hp}
           adversaryMP={game.adversary.mp}

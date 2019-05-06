@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
@@ -7,8 +8,8 @@ const styles = theme => ({
     backgroundSize: "contain",
     backgroundColor: "#d3b885",
     margin: "10px",
-    minHeight: "100%",
-    maxHeight: "100%",
+    minHeight: "37vh",
+    maxHeight: "37vh",
     fontSize: 60,
     color: "#d4af37",
     textAlign: "center",
@@ -20,14 +21,20 @@ const styles = theme => ({
 
 class CardPreview extends Component {
   render() {
-    const { classes, cardDetail } = this.props;
+    const { classes, cardDetail, selected, index, clickAction } = this.props;
     let style = {
       backgroundImage: `url("${cardDetail}")`
     };
+    if (selected) {
+      style.filter = "brightness(125%)";
+    }
     return (
-      <div className={classes.root}>
-        <div className={classes.cardCount} style={style} />
-      </div>
+      <Button
+        fullWidth
+        className={classes.root}
+        style={style}
+        onClick={event => clickAction(index)}
+      />
     );
   }
 }
