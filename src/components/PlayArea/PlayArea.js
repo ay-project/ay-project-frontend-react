@@ -14,11 +14,9 @@ const styles = theme => ({
     borderRadius: "35px"
   },
   rootGrid: {
-    padding: "0px 10px",
-    margin: "2px"
+    padding: "0px 10px"
   },
   grid: {
-    margin: "0vh",
     paddingTop: "15px",
     minHeight: "100%",
     maxHeight: "100%"
@@ -55,7 +53,7 @@ class PlayArea extends Component {
                 <CardArea
                   cards={adversaryBoard}
                   clickAction={adversaryCardSelectAction}
-                  midClickAction={midClickAction}
+                  midClickAction={null}
                 />
               </Grid>
               <Grid item xs={1} className={classes.grid}>
