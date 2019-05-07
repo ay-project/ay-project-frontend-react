@@ -4,6 +4,7 @@ import { Router, Route } from "react-router-dom";
 import history from "./history";
 import Home from "./pages/Home";
 import Game from "./pages/Game";
+import GameLobby from "./pages/GameLobby";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class AppRouter extends Component {
       this.setState({ token: `user: ${user}, pwd: ${pwd}` });
       console.log(this.state.token);
     }, 1000);
-    history.push("/Home");
+    history.push("/game/lobby");
   };
 
   render() {
@@ -32,7 +33,8 @@ class AppRouter extends Component {
             component={() => <LoginContainer onSubmitLogin={this.getToken} />}
           />
           <Route path="/Home/" component={Home} />
-          <Route path="/Game/" component={Game} />
+          <Route path="/Game/Board" component={Game} />
+          <Route path="/Game/Lobby" component={GameLobby} />
         </div>
       </Router>
     );
