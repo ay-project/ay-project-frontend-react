@@ -13,7 +13,7 @@ const styles = theme => ({
 });
 
 class CardArea extends Component {
-  generateBoard = (board, clickAction, midClickAction) => {
+  generateCardArea = (board, clickAction, midClickAction) => {
     let cards = [];
     if (isNaN(board)) {
       if (midClickAction !== null) {
@@ -76,7 +76,7 @@ class CardArea extends Component {
     return (
       <div className={classes.root}>
         <Grid container spacing={0} justify={"center"}>
-          {this.generateBoard(cards, clickAction, midClickAction)}
+          {this.generateCardArea(cards, clickAction, midClickAction)}
         </Grid>
       </div>
     );

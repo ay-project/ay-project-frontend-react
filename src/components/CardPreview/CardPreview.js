@@ -28,7 +28,7 @@ class CardPreview extends Component {
           fullWidth
           className={classes.root}
           style={style}
-          onClick={event => clickAction(index)}
+          onClick={() => clickAction(index)}
         />
       </div>
     );

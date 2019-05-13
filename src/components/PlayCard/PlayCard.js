@@ -30,7 +30,7 @@ class PlayCard extends Component {
       <Button
         fullWidth
         className={classes.root}
-        onClick={event => clickAction(index)}
+        onClick={() => clickAction(index)}
         style={style}
       />
     );

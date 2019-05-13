@@ -21,7 +21,7 @@ class CardSelectScreen extends Component {
     super();
   }
 
-  generateBoard = (board, clickAction, style) => {
+  generateCardArea = (board, clickAction, style) => {
     let cards = [];
     for (let i = 0; i < board.length; i++) {
       cards.push(
@@ -45,14 +45,13 @@ class CardSelectScreen extends Component {
         open={open}
         fullWidth={true}
         maxWidth={"lg"}
-        onClose={() => {}}
         aria-labelledby="max-width-dialog-title"
       >
         <DialogTitle>Pick cards to swap</DialogTitle>
         <DialogContent>
           <DialogContentText>
             <Grid container spacing={1}>
-              {this.generateBoard(cards, clickAction, classes.cardPreview)}
+              {this.generateCardArea(cards, clickAction, classes.cardPreview)}
             </Grid>
           </DialogContentText>
           <DialogActions>
