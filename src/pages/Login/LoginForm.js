@@ -37,7 +37,7 @@ class LoginForm extends Component {
       <MuiThemeProvider theme={color_theme}>
         <CssBaseline />
         <Paper className={classes.paper} elevation={1} xs={6}>
-          <Grid container spacing={12}>
+          <Grid container spacing={16}>
             <TextField
               id="gamertag-input"
               label="GamerTag"
@@ -49,7 +49,7 @@ class LoginForm extends Component {
               fullWidth
             />
           </Grid>
-          <Grid container spacing={12}>
+          <Grid container spacing={16}>
             <TextField
               id="password-input"
               label="Password"
@@ -61,7 +61,7 @@ class LoginForm extends Component {
               fullWidth
             />
           </Grid>
-          <Grid container spacing={12}>
+          <Grid container spacing={16}>
             <Button
               variant="contained"
               color="primary"
@@ -77,7 +77,7 @@ class LoginForm extends Component {
               </NavLink>
             </Button>
           </Grid>
-          <Grid container spacing={12}>
+          <Grid container spacing={16}>
             <Grid item xs={8}>
               <Button color="secondary" className={classes.button} size="small">
                 <NavLink to="/forgotpassword">Forgot password?</NavLink>

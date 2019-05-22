@@ -5,6 +5,12 @@ import history from "./history";
 import Home from "./pages/Home";
 import Game from "./pages/Game";
 import GameLobby from "./pages/GameLobby";
+import axios from "axios";
+
+axios.defaults.baseURL = "http://localhost:3001";
+//axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+//axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
+//axios.defaults.headers.post["Content-Type"] = "application/json";
 
 class AppRouter extends Component {
   constructor(props) {
@@ -16,11 +22,13 @@ class AppRouter extends Component {
   }
 
   getToken = (user, pwd) => {
-    setTimeout(() => {
-      this.setState({ token: `user: ${user}, pwd: ${pwd}` });
-      console.log(this.state.token);
-    }, 1000);
-    history.push("/game/lobby");
+    axios.post(`/signin`, { username: user, password: pwd }).then(res => {
+      console.log(res);
+      if (!res.data.hasOwnProperty("error")) {
+        this.setState({ token: res.data.token });
+        history.push("/game/lobby");
+      }
+    });
   };
 
   render() {

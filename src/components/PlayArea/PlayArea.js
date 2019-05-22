@@ -47,7 +47,7 @@ class PlayArea extends Component {
       <div className={classes.root}>
         <Grid container className={classes.rootGrid}>
           <Grid item xs={10}>
-            <Grid container spacing={1} className={classes.area}>
+            <Grid container spacing={0} className={classes.area}>
               <Grid item xs className={classes.grid}>
                 {" "}
                 <CardArea
