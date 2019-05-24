@@ -21,11 +21,13 @@ class LoginContainer extends Component {
     const { onSubmitLogin } = this.props;
     const { username, pwd } = this.state;
     return (
-      <Login
-        onSubmit={() => onSubmitLogin(username, pwd)}
-        onChangeUsername={this.onChangeUsername}
-        onChangePwd={this.onChangePwd}
-      />
+      <div>
+        <Login
+          onSubmit={() => onSubmitLogin(username, pwd)}
+          onChangeUsername={this.onChangeUsername}
+          onChangePwd={this.onChangePwd}
+        />
+      </div>
     );
   }
 }

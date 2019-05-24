@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import PlayerAvatar from "../../components/PlayerAvatar";
+import history from "../../history";
 import {
   AppBar,
   Dialog,
@@ -98,7 +99,14 @@ class GameLobby extends Component {
     return (
       <div>
         <AppBar position="static" cltokenassName={classes.bar}>
-          <div>Back button and stuff</div>
+          <Button
+            onClick={() => {
+              history.push("/game/home");
+            }}
+            color="primary"
+          >
+            Back to home
+          </Button>
         </AppBar>
         <div className={classes.textBox}>Select deck to start game with :</div>
         <Grid container>
