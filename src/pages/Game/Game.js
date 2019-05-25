@@ -8,6 +8,7 @@ import Card from "../../Classes/Card";
 import HandArea from "../../components/HandArea";
 import BottomStatusBar from "../../components/BottomStatusBar";
 import CardSelectScreen from "../../components/CardSelectScreen";
+import { Redirect } from "react-router-dom";
 
 const defaultCardData = {
   id: 1,
@@ -180,8 +181,10 @@ class Game extends Component {
   };
 
   render() {
-    const { token, classes } = this.props;
+    const { token, classes, gameToken } = this.props;
     const { game, swapDialogOpened } = this.state;
+    console.log(gameToken);
+    if (gameToken == null) return <Redirect to="/home" />;
     return (
       <div className={classes.root}>
         <CardSelectScreen

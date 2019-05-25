@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import PlayerAvatar from "../../components/PlayerAvatar";
-import history from "../../history";
 import {
   AppBar,
   Dialog,
@@ -49,6 +48,7 @@ class GameLobby extends Component {
   startGame = index => {
     this.setState({ startGameDialogOpen: true });
     console.log(`Deck selected ${index}`);
+    this.props.startGame();
   };
 
   cancelStartGame = () => {
@@ -98,16 +98,6 @@ class GameLobby extends Component {
     const { startGameDialogOpen } = this.state;
     return (
       <div>
-        <AppBar position="static" cltokenassName={classes.bar}>
-          <Button
-            onClick={() => {
-              history.push("/game/home");
-            }}
-            color="primary"
-          >
-            Back to home
-          </Button>
-        </AppBar>
         <div className={classes.textBox}>Select deck to start game with :</div>
         <Grid container>
           <Grid container className={classes.row}>

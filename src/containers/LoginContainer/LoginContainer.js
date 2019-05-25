@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Login from "../../pages/Login";
+import { Redirect } from "react-router-dom";
 
 class LoginContainer extends Component {
   constructor(props) {
@@ -17,15 +18,28 @@ class LoginContainer extends Component {
     this.setState({ pwd: event.target.value });
   };
 
+  keyPress = e => {
+    if (e.key === "Enter") {
+      const { onSubmitLogin } = this.props;
+      const { username, pwd } = this.state;
+      onSubmitLogin(username, pwd);
+    }
+  };
+
   render() {
-    const { onSubmitLogin } = this.props;
+    const { onSubmitLogin, token } = this.props;
     const { username, pwd } = this.state;
+
+    if (typeof token != "undefined" && token != null)
+      return <Redirect to={"/game/home"} />;
+
     return (
       <div>
         <Login
           onSubmit={() => onSubmitLogin(username, pwd)}
           onChangeUsername={this.onChangeUsername}
           onChangePwd={this.onChangePwd}
+          keyPress={this.keyPress}
         />
       </div>
     );

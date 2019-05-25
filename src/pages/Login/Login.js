@@ -20,7 +20,13 @@ const styles = theme => ({
 
 class Login extends Component {
   render() {
-    const { onSubmit, onChangeUsername, onChangePwd, classes } = this.props;
+    const {
+      keyPress,
+      onSubmit,
+      onChangeUsername,
+      onChangePwd,
+      classes
+    } = this.props;
     return (
       <div className={classNames(classes.root)}>
         <Grid
@@ -35,6 +41,7 @@ class Login extends Component {
               onSubmit={onSubmit}
               onChangePwd={onChangePwd}
               onChangeUsername={onChangeUsername}
+              keyPress={keyPress}
             />
           </Grid>
         </Grid>

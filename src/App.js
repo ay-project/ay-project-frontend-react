@@ -29,13 +29,13 @@ class AppRouter extends Component {
 
     const { cookies } = props;
     this.state = {
-      token: cookies.get("token") || null
+      token: cookies.get("token") || null,
+      gameToken: cookies.get("gameToken") || null
     };
   }
 
   getToken = (user, pwd) => {
     axios.post(`/signin`, { username: user, password: pwd }).then(res => {
-      console.log(res);
       if (!res.data.hasOwnProperty("error")) {
         const { cookies } = this.props;
         cookies.set("token", res.data.token, { path: "/" });
@@ -43,8 +43,36 @@ class AppRouter extends Component {
         this.setState({ token: res.data.token });
 
         history.push("/game/home");
+      } else {
+        console.log("Handle wrong login");
       }
     });
+  };
+
+  getGameToken = () => {
+    axios
+      .post(`/signin`, { username: "Livvy", password: "AAAaaa111" })
+      .then(res => {
+        if (!res.data.hasOwnProperty("error")) {
+          const { cookies } = this.props;
+          const loc = this;
+          setTimeout(() => {
+            /// TEMPORARY UNTIL SERVER CONNECTION
+            cookies.set("gameToken", res.data.token, { path: "/" });
+            loc.setState({ gameToken: res.data.token });
+            history.push("/game/play");
+          }, 3000);
+        } else {
+          console.log("Handle error");
+        }
+      });
+  };
+
+  logout = () => {
+    const { cookies } = this.props;
+    cookies.remove("token", { path: "/" });
+
+    this.setState({ token: null });
   };
 
   render() {
@@ -54,13 +82,25 @@ class AppRouter extends Component {
           <Switch>
             <Route
               component={() => {
-                return <LoginContainer onSubmitLogin={this.getToken} />;
+                return (
+                  <LoginContainer
+                    onSubmitLogin={this.getToken}
+                    token={this.state.token}
+                  />
+                );
               }}
               path="/login"
             />
             <Route
               component={() => {
-                return <GameContainer token={this.state.token} />;
+                return (
+                  <GameContainer
+                    token={this.state.token}
+                    logout={this.logout}
+                    gameToken={this.state.gameToken}
+                    startGame={this.getGameToken}
+                  />
+                );
               }}
               path="/game/*"
             />

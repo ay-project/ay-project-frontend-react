@@ -32,7 +32,13 @@ const styles = theme => ({
 
 class LoginForm extends Component {
   render() {
-    const { onChangeUsername, onChangePwd, onSubmit, classes } = this.props;
+    const {
+      keyPress,
+      onChangeUsername,
+      onChangePwd,
+      onSubmit,
+      classes
+    } = this.props;
     return (
       <MuiThemeProvider theme={color_theme}>
         <CssBaseline />
@@ -47,6 +53,7 @@ class LoginForm extends Component {
               variant="outlined"
               onChange={onChangeUsername}
               fullWidth
+              onKeyPress={keyPress}
             />
           </Grid>
           <Grid container spacing={16}>
@@ -59,6 +66,7 @@ class LoginForm extends Component {
               variant="outlined"
               onChange={onChangePwd}
               fullWidth
+              onKeyPress={keyPress}
             />
           </Grid>
           <Grid container spacing={16}>
