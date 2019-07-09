@@ -12,7 +12,6 @@ import {
   Button,
   Slide
 } from "@material-ui/core";
-
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
@@ -45,10 +44,41 @@ class GameLobby extends Component {
     this.getDeck();
   }
 
-  startGame = index => {
+  handleMatchmakerMessage = data => {
+    let result = JSON.parse(data);
+    console.log(result);
+  };
+
+  sendMessage(message) {
+    this.refWebSocket.sendMessage(message);
+  }
+
+  matchmakerConnect = index => {
+    let connection = new WebSocket("ws://localhost:8083");
     this.setState({ startGameDialogOpen: true });
+    // listen to onmessage event
+    connection.onmessage = evt => {
+      const received = JSON.parse(evt.data);
+      // Start game once connection is established
+      console.log(received);
+      if (received.message === "Connection Accepted")
+        this.startGame(index, connection);
+      else if (received.message.hasOwnProperty("gameToken")) {
+        const { onStartGame } = this.props;
+        onStartGame(received.message.gameToken);
+      }
+    };
+  };
+
+  startGame = (index, connection) => {
+    const { token } = this.props;
     console.log(`Deck selected ${index}`);
-    this.props.startGame();
+    connection.send(
+      JSON.stringify({
+        token: token,
+        deck: 1
+      })
+    );
   };
 
   cancelStartGame = () => {
@@ -72,7 +102,7 @@ class GameLobby extends Component {
       grid.push(
         <Grid item md>
           <PlayerAvatar
-            clickAction={this.startGame}
+            clickAction={this.matchmakerConnect}
             index={index}
             tag={decks[index].name}
           />
@@ -83,7 +113,7 @@ class GameLobby extends Component {
       grid.push(
         <Grid item md>
           <PlayerAvatar
-            clickAction={this.startGame}
+            clickAction={this.matchmakerConnect}
             index={index + 1}
             tag={decks[index + 1].name}
           />

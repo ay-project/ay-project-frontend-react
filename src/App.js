@@ -49,23 +49,11 @@ class AppRouter extends Component {
     });
   };
 
-  getGameToken = () => {
-    axios
-      .post(`/signin`, { username: "Livvy", password: "AAAaaa111" })
-      .then(res => {
-        if (!res.data.hasOwnProperty("error")) {
-          const { cookies } = this.props;
-          const loc = this;
-          setTimeout(() => {
-            /// TEMPORARY UNTIL SERVER CONNECTION
-            cookies.set("gameToken", res.data.token, { path: "/" });
-            loc.setState({ gameToken: res.data.token });
-            history.push("/game/play");
-          }, 3000);
-        } else {
-          console.log("Handle error");
-        }
-      });
+  getGameToken = gameToken => {
+    const { cookies } = this.props;
+    cookies.set("gameToken", gameToken, { path: "/" });
+    this.setState({ gameToken: gameToken });
+    history.push("/game/play");
   };
 
   logout = () => {

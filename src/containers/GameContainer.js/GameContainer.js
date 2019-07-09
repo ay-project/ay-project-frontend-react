@@ -72,13 +72,13 @@ class GameContainer extends Component {
             path="/game/lobby"
             component={() => {
               if (gameToken != null) return <Redirect to={"/game/play"} />;
-              return <GameLobby startGame={startGame} />;
+              return <GameLobby onStartGame={startGame} token={token} />;
             }}
           />
           <Route
             path="/game/play"
             component={() => {
-              return <Game gameToken={gameToken} />;
+              return <Game token={token} gameToken={gameToken} />;
             }}
           />
         </Switch>
