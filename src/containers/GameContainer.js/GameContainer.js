@@ -51,6 +51,7 @@ class GameContainer extends Component {
   };
 
   render() {
+    console.log("Render container");
     const { username, token, startGame, gameToken } = this.props;
     const { drawerOpened } = this.state;
 
@@ -78,6 +79,7 @@ class GameContainer extends Component {
           <Route
             path="/game/play"
             component={() => {
+              console.log("IM RENDERING !!");
               return <Game token={token} gameToken={gameToken} />;
             }}
           />

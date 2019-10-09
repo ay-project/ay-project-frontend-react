@@ -32,40 +32,7 @@ const styles = theme => ({
 class Game extends Component {
   constructor() {
     super();
-    const game = new GameData({
-      id: 1,
-      adversary: new Player({ id: 1, tag: "Livvy", deck: 4 }),
-      local: new Player({ id: 2, tag: "phil714", deck: 12 })
-    });
-    game.adversary.hand = 3;
-    game.adversary.board.push(
-      ...[
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData)
-      ]
-    );
-    game.local.board.push(
-      ...[
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData)
-      ]
-    );
-    game.local.hand.push(
-      ...[
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData)
-      ]
-    );
     this.state = {
-      game: game,
       currentLocalSelection: false,
       currentAdvSelection: false,
       currentHandSelection: false,
@@ -75,7 +42,7 @@ class Game extends Component {
   }
 
   gameConnect = (gameToken, connectionToken) => {
-    let connection = new WebSocket("ws://localhost:8084");
+    let connection = new WebSocket("ws://main_service:8084");
     // listen to onmessage event
     connection.onmessage = evt => {
       const received = JSON.parse(evt.data);
@@ -245,10 +212,11 @@ class Game extends Component {
   };
 
   render() {
+    console.log("Render game");
     const { token, classes, gameToken } = this.props;
     const { game, swapDialogOpened, connected } = this.state;
     this.gameConnect(gameToken, token);
-    if (!connected) return <LoadingScreen />;
+    if (!connected || typeof game == "undefined") return <LoadingScreen />;
     else
       return (
         <div className={classes.root}>

@@ -54,7 +54,7 @@ class GameLobby extends Component {
   }
 
   matchmakerConnect = index => {
-    let connection = new WebSocket("ws://localhost:8083");
+    let connection = new WebSocket("ws://matchmaker:8083");
     this.setState({ startGameDialogOpen: true });
     // listen to onmessage event
     connection.onmessage = evt => {
