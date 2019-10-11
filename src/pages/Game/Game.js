@@ -4,23 +4,10 @@ import GameData from "../../Classes/GameData";
 import Player from "../../Classes/Player";
 import UpperStatusBar from "../../components/UpperStatusBar";
 import PlayArea from "../../components/PlayArea";
-import Card from "../../Classes/Card";
 import HandArea from "../../components/HandArea";
 import BottomStatusBar from "../../components/BottomStatusBar";
 import CardSelectScreen from "../../components/CardSelectScreen";
 import LoadingScreen from "../../components/LoadingScreen";
-
-const defaultCardData = {
-  id: 1,
-  name: "ok",
-  img: "https://s3.us-east-2.amazonaws.com/ay-dev-assests/cards/phcard.png",
-  type: "spell",
-  effects: "none",
-  specs: {
-    cost: 2
-  },
-  uid: 11
-};
 
 const styles = theme => ({
   root: {
@@ -82,6 +69,7 @@ class Game extends Component {
       if (message.command == "init-game") {
         // init
         this.setState({ connected: true });
+        this.initGame(message.message);
       } else if (message.command == "swap-cards") {
         // swap
       } else if (message.command == "swap-cards-completed") {
@@ -211,11 +199,24 @@ class Game extends Component {
     //
   };
 
+  initGame = gameSettings => {
+    let game = new GameData({
+      id: gameSettings.id,
+      adversary: new Player(gameSettings.adversary),
+      local: new Player(gameSettings.local)
+    });
+    this.setState({ game: game });
+  };
+
+  componentDidMount() {
+    const { token, gameToken } = this.props;
+    this.gameConnect(gameToken, token);
+  }
+
   render() {
     console.log("Render game");
-    const { token, classes, gameToken } = this.props;
+    const { classes } = this.props;
     const { game, swapDialogOpened, connected } = this.state;
-    this.gameConnect(gameToken, token);
     if (!connected || typeof game == "undefined") return <LoadingScreen />;
     else
       return (
