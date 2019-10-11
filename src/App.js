@@ -20,16 +20,15 @@ class AppRouter extends Component {
     };
   }
 
-  getToken = (user, pwd) => {
-    axios.post(`/signin`, { username: user, password: pwd }).then(res => {
-      if (!res.data.hasOwnProperty("error")) {
-        sessionStorage.setItem("token", res.data.token);
-        this.setState({ token: res.data.token });
-        history.push("/game/home");
-      } else {
-        console.log("Handle wrong login");
-      }
-    });
+  getToken = async (username, password) => {
+    let res = await axios.post(`/signin`, { username, password });
+    if (!res.data.hasOwnProperty("error")) {
+      sessionStorage.setItem("token", res.data.token);
+      this.setState({ token: res.data.token });
+      history.push("/game/home");
+    } else {
+      console.log("Handle wrong login");
+    }
   };
 
   getGameToken = gameToken => {

@@ -3,7 +3,6 @@ import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import PlayerAvatar from "../../components/PlayerAvatar";
 import {
-  AppBar,
   Dialog,
   DialogTitle,
   DialogContentText,
