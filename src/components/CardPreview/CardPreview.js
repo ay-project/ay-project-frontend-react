@@ -1,32 +1,35 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
     background: `no-repeat`,
     backgroundSize: "contain",
     backgroundColor: "#d3b885",
-    margin: "10px",
-    minHeight: "100%",
-    maxHeight: "100%",
-    fontSize: 60,
-    color: "#d4af37",
-    textAlign: "center",
-    borderRadius: "35px",
-    textShadow:
-      "0.025em 0 #fafad2, 0 0.025em #fafad2, -0.025em 0 #fafad2,0 -0.025em #fafad2, -0.025em -0.025em #fafad2, -0.025em 0.025em #fafad2,0.025em -0.025em #fafad2, 0.025em 0.025em #fafad2"
+    minHeight: "37vh",
+    maxHeight: "37vh",
+    borderRadius: "35px"
   }
 });
 
 class CardPreview extends Component {
   render() {
-    const { classes, cardDetail } = this.props;
+    const { classes, cardDetail, selected, index, clickAction } = this.props;
     let style = {
       backgroundImage: `url("${cardDetail}")`
     };
+    if (selected) {
+      style.filter = "brightness(125%)";
+    }
     return (
-      <div className={classes.root}>
-        <div className={classes.cardCount} style={style} />
+      <div style={{ marginLeft: "20px" }}>
+        <Button
+          fullWidth
+          className={classes.root}
+          style={style}
+          onClick={() => clickAction(index)}
+        />
       </div>
     );
   }

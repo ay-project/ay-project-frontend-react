@@ -5,8 +5,7 @@ import { Grid } from "@material-ui/core";
 import TurnTimer from "../TurnTimer";
 import EndTurnSquare from "../EndTurnSquare";
 import PlayerAvatar from "../PlayerAvatar";
-import CardCounter from "../CardCounter";
-import AdversaryStatusBar from "../AdversaryStatusBar";
+import StatusBar from "../StatusBar";
 
 const styles = theme => ({
   toolbar: {
@@ -41,7 +40,7 @@ class UpperStatusBar extends Component {
         <AppBar position="static" className={classes.toolbar} elevation={0}>
           <Grid container justify="center">
             <Grid item xs={3} style={{ padding: 15 }}>
-              <AdversaryStatusBar mp={adversaryMP} hp={adversaryHP} />
+              <StatusBar mp={adversaryMP} hp={adversaryHP} />
             </Grid>
             <Grid item xs={6}>
               <PlayerAvatar clickAction={faceAction} tag={adversaryTag} />

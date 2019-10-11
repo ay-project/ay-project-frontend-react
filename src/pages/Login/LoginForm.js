@@ -32,12 +32,18 @@ const styles = theme => ({
 
 class LoginForm extends Component {
   render() {
-    const { onChangeUsername, onChangePwd, onSubmit, classes } = this.props;
+    const {
+      keyPress,
+      onChangeUsername,
+      onChangePwd,
+      onSubmit,
+      classes
+    } = this.props;
     return (
       <MuiThemeProvider theme={color_theme}>
         <CssBaseline />
         <Paper className={classes.paper} elevation={1} xs={6}>
-          <Grid container spacing={12}>
+          <Grid container spacing={16}>
             <TextField
               id="gamertag-input"
               label="GamerTag"
@@ -47,9 +53,10 @@ class LoginForm extends Component {
               variant="outlined"
               onChange={onChangeUsername}
               fullWidth
+              onKeyPress={keyPress}
             />
           </Grid>
-          <Grid container spacing={12}>
+          <Grid container spacing={16}>
             <TextField
               id="password-input"
               label="Password"
@@ -59,9 +66,10 @@ class LoginForm extends Component {
               variant="outlined"
               onChange={onChangePwd}
               fullWidth
+              onKeyPress={keyPress}
             />
           </Grid>
-          <Grid container spacing={12}>
+          <Grid container spacing={16}>
             <Button
               variant="contained"
               color="primary"
@@ -77,7 +85,7 @@ class LoginForm extends Component {
               </NavLink>
             </Button>
           </Grid>
-          <Grid container spacing={12}>
+          <Grid container spacing={16}>
             <Grid item xs={8}>
               <Button color="secondary" className={classes.button} size="small">
                 <NavLink to="/forgotpassword">Forgot password?</NavLink>

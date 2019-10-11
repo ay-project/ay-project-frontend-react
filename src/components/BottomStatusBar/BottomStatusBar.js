@@ -2,10 +2,7 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import { Grid } from "@material-ui/core";
-import TurnTimer from "../TurnTimer";
-import EndTurnSquare from "../EndTurnSquare";
 import PlayerAvatar from "../PlayerAvatar";
-import CardCounter from "../CardCounter";
 import StatusBar from "../StatusBar";
 import HeroPower from "../HeroPower";
 

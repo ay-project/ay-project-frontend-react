@@ -20,8 +20,13 @@ const styles = theme => ({
 
 class Login extends Component {
   render() {
-    const { onSubmit, classes } = this.props;
-
+    const {
+      keyPress,
+      onSubmit,
+      onChangeUsername,
+      onChangePwd,
+      classes
+    } = this.props;
     return (
       <div className={classNames(classes.root)}>
         <Grid
@@ -32,7 +37,12 @@ class Login extends Component {
           style={{ minHeight: "90vh" }}
         >
           <Grid item xs={3}>
-            <LoginForm onSubmit={onSubmit} />
+            <LoginForm
+              onSubmit={onSubmit}
+              onChangePwd={onChangePwd}
+              onChangeUsername={onChangeUsername}
+              keyPress={keyPress}
+            />
           </Grid>
         </Grid>
         <Grid>

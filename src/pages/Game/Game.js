@@ -4,21 +4,10 @@ import GameData from "../../Classes/GameData";
 import Player from "../../Classes/Player";
 import UpperStatusBar from "../../components/UpperStatusBar";
 import PlayArea from "../../components/PlayArea";
-import Card from "../../Classes/Card";
 import HandArea from "../../components/HandArea";
 import BottomStatusBar from "../../components/BottomStatusBar";
-
-const defaultCardData = {
-  id: 1,
-  name: "ok",
-  img: "https://s3.us-east-2.amazonaws.com/ay-dev-assests/cards/phcard.png",
-  type: "spell",
-  effects: "none",
-  specs: {
-    cost: 2
-  },
-  uid: 11
-};
+import CardSelectScreen from "../../components/CardSelectScreen";
+import LoadingScreen from "../../components/LoadingScreen";
 
 const styles = theme => ({
   root: {
@@ -30,51 +19,78 @@ const styles = theme => ({
 class Game extends Component {
   constructor() {
     super();
-    const game = new GameData({
-      id: 1,
-      adversary: new Player({ id: 1, tag: "Livvy", deck: 4 }),
-      local: new Player({ id: 2, tag: "phil714", deck: 12 })
-    });
-    game.adversary.hand = 3;
-    game.adversary.board.push(
-      ...[
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData)
-      ]
-    );
-    game.local.board.push(
-      ...[
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData)
-      ]
-    );
-    game.local.hand.push(
-      ...[
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData),
-        new Card(defaultCardData)
-      ]
-    );
     this.state = {
-      game: game,
       currentLocalSelection: false,
       currentAdvSelection: false,
-      currentHandSelection: false
+      currentHandSelection: false,
+      swapDialogOpened: true,
+      connected: false
     };
   }
+
+  gameConnect = (gameToken, connectionToken) => {
+    let connection = new WebSocket("ws://main_service:8084");
+    // listen to onmessage event
+    connection.onmessage = evt => {
+      const received = JSON.parse(evt.data);
+      // Start game once connection is established
+      console.log(received);
+      if (received.message === "Connection Accepted") {
+        connection.send(
+          JSON.stringify({
+            target: "lobby-manager",
+            message: {
+              command: "start-game",
+              token: connectionToken,
+              gameToken: gameToken
+            }
+          })
+        );
+      } else if (received.hasOwnProperty("command")) {
+        this.routeMessage(received);
+      }
+    };
+  };
+
+  routeMessage = message => {
+    if (message.type == "error" || message.command == "error") {
+      // error
+      console.log("ERROR " + message);
+    } else if (message.issuer === "sys") {
+      // sys
+      console.log("SYS " + message);
+    } else if (message.issuer == "authenticator") {
+      //
+      console.log(message);
+    } else if (message.issuer === "matchmaker") {
+      // matchmaker
+      console.log("MATCHMAKER " + message);
+    } else if (message.issuer === "game-manager") {
+      if (message.command == "init-game") {
+        // init
+        this.setState({ connected: true });
+        this.initGame(message.message);
+      } else if (message.command == "swap-cards") {
+        // swap
+      } else if (message.command == "swap-cards-completed") {
+        // adversary is done swapping
+      } else if (message.command == "start-turn") {
+        // set up new turn
+      } else if (message.command == "start-turn-adversary") {
+        // set up new turn adversary
+      } else if (message.command == "update-game") {
+        // update game object
+      } else if (message.command == "update-board") {
+        // update boards
+      } else if (message.command == "update-hp") {
+        // update players HP
+      } else if (message.command == "update-mana") {
+        // update players mana
+      } else if (message.command == "end-game") {
+        // game over
+      }
+    }
+  };
 
   /**Update adversary hp */
   updateAdvHP = value => {
@@ -161,41 +177,86 @@ class Game extends Component {
     this.setState({ game, currentHandSelection });
   };
 
+  swapCardSelectAction = cardIndex => {
+    console.log("clicked : " + cardIndex);
+    const game = { ...this.state.game };
+    game.local.hand[cardIndex].selected = !game.local.hand[cardIndex].selected;
+    this.setState({ game });
+  };
+
+  handleSwapCards = () => {
+    this.setState({ swapDialogOpened: false });
+    const game = { ...this.state.game };
+    /// Tempo
+    let swaps = [];
+    for (let card of game.local.hand) {
+      if (card.selected) {
+        swaps.push(card.id);
+        card.selected = false;
+      }
+    }
+    console.log(`Cards to swap : ${swaps}`);
+    //
+  };
+
+  initGame = gameSettings => {
+    let game = new GameData({
+      id: gameSettings.id,
+      adversary: new Player(gameSettings.adversary),
+      local: new Player(gameSettings.local)
+    });
+    this.setState({ game: game });
+  };
+
+  componentDidMount() {
+    const { token, gameToken } = this.props;
+    this.gameConnect(gameToken, token);
+  }
+
   render() {
-    const { token, classes } = this.props;
-    const { game } = this.state;
-    return (
-      <div className={classes.root}>
-        <UpperStatusBar
-          adversaryHP={game.adversary.hp}
-          adversaryMP={game.adversary.mp}
-          adversaryHand={game.adversary.hand}
-          adversaryTag={game.adversary.tag}
-          faceAction={this.setAdvFaceSelect}
-          endTurnAction={this.endTurn}
-        />
-        <HandArea hand={game.adversary.hand} handSelectAction={null} />
-        <PlayArea
-          adversaryBoard={game.adversary.board}
-          adversaryDeck={game.adversary.deck}
-          localBoard={game.local.board}
-          localDeck={game.local.deck}
-          adversaryCardSelectAction={this.targetAdversaryCard}
-          localCardSelectAction={this.targetLocalCard}
-          midClickAction={this.midClickAction}
-        />
-        <HandArea
-          hand={game.local.hand}
-          handSelectAction={this.handCardSelectAction}
-        />
-        <BottomStatusBar
-          localHP={game.local.hp}
-          localMP={game.local.mp}
-          localTag={game.local.tag}
-          faceAction={this.setLocalFaceSelect}
-        />
-      </div>
-    );
+    console.log("Render game");
+    const { classes } = this.props;
+    const { game, swapDialogOpened, connected } = this.state;
+    if (!connected || typeof game == "undefined") return <LoadingScreen />;
+    else
+      return (
+        <div className={classes.root}>
+          <CardSelectScreen
+            open={swapDialogOpened}
+            handleClose={this.handleSwapCards}
+            cards={game.local.hand}
+            clickAction={this.swapCardSelectAction}
+          />
+          <UpperStatusBar
+            adversaryHP={game.adversary.hp}
+            adversaryMP={game.adversary.mp}
+            adversaryHand={game.adversary.hand}
+            adversaryTag={game.adversary.tag}
+            faceAction={this.setAdvFaceSelect}
+            endTurnAction={this.endTurn}
+          />
+          <HandArea hand={game.adversary.hand} handSelectAction={null} />
+          <PlayArea
+            adversaryBoard={game.adversary.board}
+            adversaryDeck={game.adversary.deck}
+            localBoard={game.local.board}
+            localDeck={game.local.deck}
+            adversaryCardSelectAction={this.targetAdversaryCard}
+            localCardSelectAction={this.targetLocalCard}
+            midClickAction={this.midClickAction}
+          />
+          <HandArea
+            hand={game.local.hand}
+            handSelectAction={this.handCardSelectAction}
+          />
+          <BottomStatusBar
+            localHP={game.local.hp}
+            localMP={game.local.mp}
+            localTag={game.local.tag}
+            faceAction={this.setLocalFaceSelect}
+          />
+        </div>
+      );
   }
 }
 
