@@ -68,7 +68,6 @@ class Game extends Component {
     } else if (message.issuer === "game-manager") {
       if (message.command == "init-game") {
         // init
-        this.setState({ connected: true });
         this.initGame(message.message);
       } else if (message.command == "swap-cards") {
         // swap
@@ -206,6 +205,7 @@ class Game extends Component {
       local: new Player(gameSettings.local)
     });
     this.setState({ game: game });
+    this.setState({ connected: true });
   };
 
   componentDidMount() {

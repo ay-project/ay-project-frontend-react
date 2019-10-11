@@ -15,7 +15,7 @@ const styles = theme => ({
 class CardArea extends Component {
   generateCardArea = (board, clickAction, midClickAction) => {
     let cards = [];
-    if (board.length === 0) {
+    if (typeof board != "number") {
       if (midClickAction !== null) {
         cards.push(
           <Grid item xs>
