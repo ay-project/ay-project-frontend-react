@@ -114,7 +114,7 @@ class Game extends Component {
 
   handleStartTurn = data => {
     const game = { ...this.state.game };
-    game.local.mana = data.mana;
+    game.local.mp = data.mana;
     game.local.manapool = data.manapool;
     game.local.deck = data.deck;
     game.local.hand = Player.createCards(data.hand);
@@ -125,7 +125,7 @@ class Game extends Component {
 
   handleStartTurnAdversary = data => {
     const game = { ...this.state.game };
-    game.adversary.mana = data.mana;
+    game.adversary.mp = data.mana;
     game.adversary.manapool = data.manapool;
     game.adversary.deck = data.deck;
     game.adversary.hand = data.hand;
@@ -152,8 +152,12 @@ class Game extends Component {
 
   /**End a turn */
   endTurn = () => {
-    console.log("end turn");
-    this.updateAdvMP(2);
+    const game = { ...this.state.game };
+    this.send({
+      command: "end-turn",
+      gameId: game.gameId,
+      playerId: game.local.id
+    });
   };
 
   /** Update adversary hand*/
@@ -294,6 +298,8 @@ class Game extends Component {
           <UpperStatusBar
             adversaryHP={game.adversary.hp}
             adversaryMP={game.adversary.mp}
+            adversaryHPMax={30}
+            adversaryMPMax={game.adversary.manapool}
             adversaryHand={game.adversary.hand}
             adversaryTag={game.adversary.tag}
             faceAction={this.setAdvFaceSelect}
@@ -316,6 +322,8 @@ class Game extends Component {
           <BottomStatusBar
             localHP={game.local.hp}
             localMP={game.local.mp}
+            localHPMax={30}
+            localMPMax={game.local.manapool}
             localTag={game.local.tag}
             faceAction={this.setLocalFaceSelect}
           />

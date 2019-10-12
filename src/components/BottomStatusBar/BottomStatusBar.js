@@ -26,7 +26,15 @@ class BottomStatusBar extends Component {
   }
 
   render() {
-    const { classes, faceAction, localHP, localMP, localTag } = this.props;
+    const {
+      classes,
+      faceAction,
+      localHP,
+      localMP,
+      localHPMax,
+      localMPMax,
+      localTag
+    } = this.props;
     return (
       <div>
         <AppBar position="static" className={classes.toolbar} elevation={0}>
@@ -39,7 +47,12 @@ class BottomStatusBar extends Component {
             </Grid>
             <Grid item xs />
             <Grid item xs={3} style={{ padding: 15 }}>
-              <StatusBar mp={localMP} hp={localHP} />
+              <StatusBar
+                mp={localMP}
+                hp={localHP}
+                hpMax={localHPMax}
+                mpMax={localMPMax}
+              />
             </Grid>
           </Grid>
         </AppBar>

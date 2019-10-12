@@ -33,6 +33,8 @@ class UpperStatusBar extends Component {
       faceAction,
       adversaryHP,
       adversaryMP,
+      adversaryHPMax,
+      adversaryMPMax,
       adversaryTag
     } = this.props;
     return (
@@ -40,7 +42,12 @@ class UpperStatusBar extends Component {
         <AppBar position="static" className={classes.toolbar} elevation={0}>
           <Grid container justify="center">
             <Grid item xs={3} style={{ padding: 15 }}>
-              <StatusBar mp={adversaryMP} hp={adversaryHP} />
+              <StatusBar
+                mp={adversaryMP}
+                hp={adversaryHP}
+                hpMax={adversaryHPMax}
+                mpMax={adversaryMPMax}
+              />
             </Grid>
             <Grid item xs={6}>
               <PlayerAvatar clickAction={faceAction} tag={adversaryTag} />
