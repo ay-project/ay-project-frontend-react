@@ -27,7 +27,8 @@ class Game extends Component {
       currentHandSelection: false,
       swapDialogOpened: true,
       connected: false,
-      waitingForSwap: false
+      waitingSwapDialog: false,
+      waitingTurnDialog: false
     };
   }
 
@@ -80,30 +81,57 @@ class Game extends Component {
       // matchmaker
       console.log("MATCHMAKER " + message);
     } else if (message.issuer === "game-manager") {
-      if (message.command == "init-game") {
+      if (message.command === "init-game") {
         // init
         this.initGame(message.message);
-      } else if (message.command == "swap-cards") {
+      } else if (message.command === "swap-cards") {
         // swap
-      } else if (message.command == "swap-cards-completed") {
-        this.setState({ waitingForSwap: false });
+      } else if (message.command === "swap-cards-completed") {
+        this.setState({ waitingSwapDialog: false });
         // adversary is done swapping
-      } else if (message.command == "start-turn") {
+      } else if (message.command === "start-turn") {
         // set up new turn
-      } else if (message.command == "start-turn-adversary") {
+        this.setState({ waitingTurnDialog: false });
+        this.handleStartTurn(message.message);
+      } else if (message.command === "start-turn-adversary") {
         // set up new turn adversary
-      } else if (message.command == "update-game") {
+        this.setState({ waitingTurnDialog: true });
+        console.log(message.message);
+        this.handleStartTurnAdversary(message.message);
+      } else if (message.command === "update-game") {
         // update game object
-      } else if (message.command == "update-board") {
+      } else if (message.command === "update-board") {
         // update boards
-      } else if (message.command == "update-hp") {
+      } else if (message.command === "update-hp") {
         // update players HP
-      } else if (message.command == "update-mana") {
+      } else if (message.command === "update-mana") {
         // update players mana
-      } else if (message.command == "end-game") {
+      } else if (message.command === "end-game") {
         // game over
       }
     }
+  };
+
+  handleStartTurn = data => {
+    const game = { ...this.state.game };
+    game.local.mana = data.mana;
+    game.local.manapool = data.manapool;
+    game.local.deck = data.deck;
+    game.local.hand = Player.createCards(data.hand);
+    game.local.board = Player.createCards(data.localBoard);
+    game.adversary.board = Player.createCards(data.adversaryBoard);
+    this.setState({ game });
+  };
+
+  handleStartTurnAdversary = data => {
+    const game = { ...this.state.game };
+    game.adversary.mana = data.mana;
+    game.adversary.manapool = data.manapool;
+    game.adversary.deck = data.deck;
+    game.adversary.hand = data.hand;
+    game.local.board = Player.createCards(data.localBoard);
+    game.adversary.board = Player.createCards(data.adversaryBoard);
+    this.setState({ game });
   };
 
   /**Update adversary hp */
@@ -215,8 +243,7 @@ class Game extends Component {
       playerId: game.local.id,
       swaps: swaps
     });
-    this.setState({ waitingForSwap: true });
-    //
+    this.setState({ waitingSwapDialog: true });
   };
 
   initGame = gameSettings => {
@@ -237,7 +264,13 @@ class Game extends Component {
   render() {
     console.log("Render game");
     const { classes } = this.props;
-    const { game, swapDialogOpened, connected, waitingForSwap } = this.state;
+    const {
+      game,
+      swapDialogOpened,
+      connected,
+      waitingSwapDialog,
+      waitingTurnDialog
+    } = this.state;
     if (!connected || typeof game == "undefined") return <LoadingScreen />;
     else
       return (
@@ -248,9 +281,16 @@ class Game extends Component {
             cards={game.local.hand}
             clickAction={this.swapCardSelectAction}
           />
-          <Dialog aria-labelledby="simple-dialog-title" open={waitingForSwap}>
-            Please wait for other player ...
+          <Dialog
+            aria-labelledby="simple-dialog-title"
+            open={waitingSwapDialog}
+          >
+            Please wait for the other player ...
           </Dialog>
+          <Dialog
+            aria-labelledby="simple-dialog-title"
+            open={waitingTurnDialog}
+          ></Dialog>
           <UpperStatusBar
             adversaryHP={game.adversary.hp}
             adversaryMP={game.adversary.mp}
