@@ -30,6 +30,7 @@ class Game extends Component {
 
   gameConnect = (gameToken, connectionToken) => {
     let connection = new WebSocket("ws://main_service:8084");
+    this.setState({ connection });
     // listen to onmessage event
     connection.onmessage = evt => {
       const received = JSON.parse(evt.data);
@@ -52,6 +53,16 @@ class Game extends Component {
     };
   };
 
+  send = message => {
+    const { connection } = this.state;
+    connection.send(
+      JSON.stringify({
+        target: "game-manager",
+        message
+      })
+    );
+  };
+
   routeMessage = message => {
     if (message.type == "error" || message.command == "error") {
       // error
@@ -68,7 +79,6 @@ class Game extends Component {
     } else if (message.issuer === "game-manager") {
       if (message.command == "init-game") {
         // init
-        this.setState({ connected: true });
         this.initGame(message.message);
       } else if (message.command == "swap-cards") {
         // swap
@@ -187,7 +197,6 @@ class Game extends Component {
   handleSwapCards = () => {
     this.setState({ swapDialogOpened: false });
     const game = { ...this.state.game };
-    /// Tempo
     let swaps = [];
     for (let card of game.local.hand) {
       if (card.selected) {
@@ -196,6 +205,12 @@ class Game extends Component {
       }
     }
     console.log(`Cards to swap : ${swaps}`);
+    this.send({
+      command: "swap-cards",
+      gameId: game.gameId,
+      playerId: game.local.id,
+      swaps: swaps
+    });
     //
   };
 
@@ -206,6 +221,7 @@ class Game extends Component {
       local: new Player(gameSettings.local)
     });
     this.setState({ game: game });
+    this.setState({ connected: true });
   };
 
   componentDidMount() {
