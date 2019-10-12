@@ -30,6 +30,7 @@ class Game extends Component {
 
   gameConnect = (gameToken, connectionToken) => {
     let connection = new WebSocket("ws://main_service:8084");
+    this.setState({ connection });
     // listen to onmessage event
     connection.onmessage = evt => {
       const received = JSON.parse(evt.data);
@@ -50,6 +51,16 @@ class Game extends Component {
         this.routeMessage(received);
       }
     };
+  };
+
+  send = message => {
+    const { connection } = this.state;
+    connection.send(
+      JSON.stringify({
+        target: "game-manager",
+        message
+      })
+    );
   };
 
   routeMessage = message => {
@@ -186,7 +197,6 @@ class Game extends Component {
   handleSwapCards = () => {
     this.setState({ swapDialogOpened: false });
     const game = { ...this.state.game };
-    /// Tempo
     let swaps = [];
     for (let card of game.local.hand) {
       if (card.selected) {
@@ -195,6 +205,12 @@ class Game extends Component {
       }
     }
     console.log(`Cards to swap : ${swaps}`);
+    this.send({
+      command: "swap-cards",
+      gameId: game.gameId,
+      playerId: game.local.id,
+      swaps: swaps
+    });
     //
   };
 

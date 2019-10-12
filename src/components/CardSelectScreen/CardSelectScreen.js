@@ -17,12 +17,9 @@ const styles = theme => ({
 });
 
 class CardSelectScreen extends Component {
-  constructor() {
-    super();
-  }
-
   generateCardArea = (board, clickAction, style) => {
     let cards = [];
+    if (typeof board == "undefined") return;
     for (let i = 0; i < board.length; i++) {
       cards.push(
         <Grid item xs={3}>
