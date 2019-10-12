@@ -20,7 +20,6 @@ const styles = theme => ({
 class PlayCard extends Component {
   generateCard = () => {
     const { card, classes } = this.props;
-    console.log(card);
     if (card.img !== "default") return <div></div>;
     if (card.type === "creature")
       return (
@@ -41,14 +40,20 @@ class PlayCard extends Component {
       );
   };
   render() {
-    const { classes, clickAction, index, selected, card } = this.props;
+    const {
+      classes,
+      clickAction,
+      index,
+      selected,
+      card,
+      hoverAction
+    } = this.props;
     let style = {};
-    let text = "";
     if (card.img == null) {
       style.minHeight = "20px";
       style.maxHeight = "20px";
       style.backgroundColor = "#5577AF";
-    } else if (card.img == "default") {
+    } else if (card.img === "default") {
       style.backgroundColor = "#5577AF";
     } else {
       style = { backgroundImage: `url("${card.img}")` };
@@ -62,6 +67,7 @@ class PlayCard extends Component {
         className={classes.root}
         onClick={() => clickAction(index)}
         style={style}
+        onMouseEnter={() => hoverAction(card)}
       >
         {this.generateCard()}
       </Button>

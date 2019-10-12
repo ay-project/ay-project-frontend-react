@@ -16,7 +16,6 @@ const styles = theme => ({
 class CardPreview extends Component {
   generateCard = () => {
     const { card, classes } = this.props;
-    console.log(card);
     if (card == null) return <div></div>;
     if (card.img !== "default") return <div></div>;
     if (card.type === "creature")

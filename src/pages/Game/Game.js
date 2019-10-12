@@ -28,7 +28,8 @@ class Game extends Component {
       swapDialogOpened: true,
       connected: false,
       waitingSwapDialog: false,
-      waitingTurnDialog: false
+      waitingTurnDialog: false,
+      previewedCard: null
     };
   }
 
@@ -250,6 +251,10 @@ class Game extends Component {
     this.setState({ waitingSwapDialog: true });
   };
 
+  updatePreview = previewedCard => {
+    this.setState({ previewedCard });
+  };
+
   initGame = gameSettings => {
     let game = new GameData({
       id: gameSettings.id,
@@ -273,7 +278,8 @@ class Game extends Component {
       swapDialogOpened,
       connected,
       waitingSwapDialog,
-      waitingTurnDialog
+      waitingTurnDialog,
+      previewedCard
     } = this.state;
     if (!connected || typeof game == "undefined") return <LoadingScreen />;
     else
@@ -314,10 +320,13 @@ class Game extends Component {
             adversaryCardSelectAction={this.targetAdversaryCard}
             localCardSelectAction={this.targetLocalCard}
             midClickAction={this.midClickAction}
+            hoverAction={this.updatePreview}
+            previewedCard={previewedCard}
           />
           <HandArea
             hand={game.local.hand}
             handSelectAction={this.handCardSelectAction}
+            hoverAction={this.updatePreview}
           />
           <BottomStatusBar
             localHP={game.local.hp}

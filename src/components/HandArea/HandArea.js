@@ -28,7 +28,7 @@ const styles = theme => ({
 
 class HandArea extends Component {
   render() {
-    const { classes, hand, handSelectAction } = this.props;
+    const { classes, hand, handSelectAction, hoverAction } = this.props;
 
     return (
       <div className={classes.root}>
@@ -36,6 +36,7 @@ class HandArea extends Component {
           cards={hand}
           clickAction={handSelectAction}
           midClickAction={null}
+          hoverAction={hoverAction}
         />
       </div>
     );
