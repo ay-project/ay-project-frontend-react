@@ -23,6 +23,9 @@ class Card {
     this.type = data.type;
     this.uid = data.uid;
     this.selected = false;
+    this.subtext = data.specs.hasOwnProperty("subtext")
+      ? data.specs.subtext
+      : {};
   }
 }
 

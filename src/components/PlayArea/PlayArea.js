@@ -78,7 +78,7 @@ class PlayArea extends Component {
           </Grid>
           <Grid item xs className={classes.preview}>
             {" "}
-            <CardPreview cardDetail="https://s3.us-east-2.amazonaws.com/ay-dev-assests/cards/phcard.png" />
+            <CardPreview card={null} />
           </Grid>
         </Grid>
       </div>
