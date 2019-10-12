@@ -8,6 +8,8 @@ import HandArea from "../../components/HandArea";
 import BottomStatusBar from "../../components/BottomStatusBar";
 import CardSelectScreen from "../../components/CardSelectScreen";
 import LoadingScreen from "../../components/LoadingScreen";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
 
 const styles = theme => ({
   root: {
@@ -24,7 +26,8 @@ class Game extends Component {
       currentAdvSelection: false,
       currentHandSelection: false,
       swapDialogOpened: true,
-      connected: false
+      connected: false,
+      waitingForSwap: false
     };
   }
 
@@ -83,6 +86,7 @@ class Game extends Component {
       } else if (message.command == "swap-cards") {
         // swap
       } else if (message.command == "swap-cards-completed") {
+        this.setState({ waitingForSwap: false });
         // adversary is done swapping
       } else if (message.command == "start-turn") {
         // set up new turn
@@ -211,6 +215,7 @@ class Game extends Component {
       playerId: game.local.id,
       swaps: swaps
     });
+    this.setState({ waitingForSwap: true });
     //
   };
 
@@ -232,7 +237,7 @@ class Game extends Component {
   render() {
     console.log("Render game");
     const { classes } = this.props;
-    const { game, swapDialogOpened, connected } = this.state;
+    const { game, swapDialogOpened, connected, waitingForSwap } = this.state;
     if (!connected || typeof game == "undefined") return <LoadingScreen />;
     else
       return (
@@ -243,6 +248,9 @@ class Game extends Component {
             cards={game.local.hand}
             clickAction={this.swapCardSelectAction}
           />
+          <Dialog aria-labelledby="simple-dialog-title" open={waitingForSwap}>
+            Please wait for other player ...
+          </Dialog>
           <UpperStatusBar
             adversaryHP={game.adversary.hp}
             adversaryMP={game.adversary.mp}
