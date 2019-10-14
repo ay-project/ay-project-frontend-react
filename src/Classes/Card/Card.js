@@ -1,6 +1,6 @@
 class Card {
   constructor(data) {
-    this.id = data.id;
+    this.id = data.uid;
     this.name = data.name;
     this.img =
       "default"; /*

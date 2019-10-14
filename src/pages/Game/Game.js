@@ -59,7 +59,10 @@ class Game extends Component {
   };
 
   send = message => {
-    const { connection } = this.state;
+    const { connection, game } = this.state;
+    message.gameId = game.gameId;
+    message.playerId = game.local.id;
+    console.log(message);
     connection.send(
       JSON.stringify({
         target: "game-manager",
@@ -71,7 +74,7 @@ class Game extends Component {
   routeMessage = message => {
     if (message.type == "error" || message.command == "error") {
       // error
-      console.log("ERROR " + message);
+      console.log("ERROR " + JSON.stringify(message));
     } else if (message.issuer === "sys") {
       // sys
       console.log("SYS " + message);
@@ -82,6 +85,7 @@ class Game extends Component {
       // matchmaker
       console.log("MATCHMAKER " + message);
     } else if (message.issuer === "game-manager") {
+      console.log(message);
       if (message.command === "init-game") {
         // init
         this.initGame(message.message);
@@ -101,6 +105,7 @@ class Game extends Component {
         this.handleStartTurnAdversary(message.message);
       } else if (message.command === "update-game") {
         // update game object
+        this.updateGame(message.message);
       } else if (message.command === "update-board") {
         // update boards
       } else if (message.command === "update-hp") {
@@ -135,6 +140,19 @@ class Game extends Component {
     this.setState({ game });
   };
 
+  updateGame = data => {
+    const game = { ...this.state.game };
+    game.adversary.mp = data.adversaryMana;
+    game.adversary.hp = data.adversaryHP;
+    game.adversary.hand = data.adversaryHand;
+    game.local.hand = Player.createCards(data.localHand);
+    game.local.mp = data.localMana;
+    game.local.hp = data.localHP;
+    game.local.board = Player.createCards(data.localBoard);
+    game.adversary.board = Player.createCards(data.adversaryBoard);
+    this.setState({ game });
+  };
+
   /**Update adversary hp */
   updateAdvHP = value => {
     console.log("update hp");
@@ -155,9 +173,7 @@ class Game extends Component {
   endTurn = () => {
     const game = { ...this.state.game };
     this.send({
-      command: "end-turn",
-      gameId: game.gameId,
-      playerId: game.local.id
+      command: "end-turn"
     });
   };
 
@@ -209,6 +225,15 @@ class Game extends Component {
 
   midClickAction = index => {
     console.log(`clicked in between ${index} and ${index + 1}`);
+    const { currentHandSelection, game } = this.state;
+    if (currentHandSelection) {
+      this.send({
+        command: "play-card",
+        card: game.local.hand[currentHandSelection].id,
+        index: index,
+        defender: 0
+      });
+    }
   };
 
   handCardSelectAction = cardIndex => {
