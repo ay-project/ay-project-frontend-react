@@ -244,11 +244,11 @@ class Game extends Component {
     let defender = 0;
     console.log(currentAdvSelection);
     console.log(currentLocalSelection);
-    if (currentHandSelection) {
+    if (currentHandSelection !== false) {
       if (currentAdvSelection === -1) defender = -1;
-      else if (currentAdvSelection)
+      else if (currentAdvSelection !== false)
         defender = game.adversary.board[currentAdvSelection].id;
-      else if (currentLocalSelection)
+      else if (currentLocalSelection !== false)
         defender = game.local.board[currentLocalSelection].id;
       this.send({
         command: "play-card",
