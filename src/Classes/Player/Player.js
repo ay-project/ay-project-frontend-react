@@ -12,6 +12,7 @@ class Player {
     this.hp = 30;
     this.manapool = 0;
     this.mp = 0;
+    this.selected = false;
   }
 
   static createCards(cards) {

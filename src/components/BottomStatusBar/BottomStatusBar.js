@@ -33,7 +33,8 @@ class BottomStatusBar extends Component {
       localMP,
       localHPMax,
       localMPMax,
-      localTag
+      localTag,
+      selected
     } = this.props;
     return (
       <div>
@@ -43,7 +44,11 @@ class BottomStatusBar extends Component {
               <HeroPower clickAction={faceAction} />
             </Grid>
             <Grid item xs={6}>
-              <PlayerAvatar clickAction={faceAction} tag={localTag} />
+              <PlayerAvatar
+                clickAction={faceAction}
+                tag={localTag}
+                selected={selected}
+              />
             </Grid>
             <Grid item xs />
             <Grid item xs={3} style={{ padding: 15 }}>

@@ -35,7 +35,8 @@ class UpperStatusBar extends Component {
       adversaryMP,
       adversaryHPMax,
       adversaryMPMax,
-      adversaryTag
+      adversaryTag,
+      selected
     } = this.props;
     return (
       <div>
@@ -50,7 +51,11 @@ class UpperStatusBar extends Component {
               />
             </Grid>
             <Grid item xs={6}>
-              <PlayerAvatar clickAction={faceAction} tag={adversaryTag} />
+              <PlayerAvatar
+                clickAction={faceAction}
+                tag={adversaryTag}
+                selected={selected}
+              />
             </Grid>
             <Grid item xs={2} style={{ padding: 3 }}>
               <EndTurnSquare clickAction={endTurnAction} />

@@ -187,7 +187,16 @@ class Game extends Component {
 
   /**Action when face is targetted */
   setAdvFaceSelect = () => {
-    console.log("clicked adv");
+    const game = { ...this.state.game };
+    let currentAdvSelection = this.state.currentAdvSelection;
+    let targetState = !game.adversary.selected;
+    if (currentAdvSelection !== false && currentAdvSelection !== -1) {
+      game.adversary.board[currentAdvSelection].selected = false;
+    }
+    game.adversary.selected = targetState;
+    if (targetState) currentAdvSelection = -1;
+    else currentAdvSelection = false;
+    this.setState({ game, currentAdvSelection });
   };
 
   /**Action when face is targetted */
@@ -197,21 +206,21 @@ class Game extends Component {
 
   /**Toogle the selected adversary card */
   targetAdversaryCard = cardIndex => {
-    console.log("clicked : " + cardIndex);
     const game = { ...this.state.game };
     let currentAdvSelection = this.state.currentAdvSelection;
     let targetState = !game.adversary.board[cardIndex].selected;
-    if (currentAdvSelection !== false) {
+    if (currentAdvSelection === -1) game.adversary.selected = false;
+    else if (currentAdvSelection !== false) {
       game.adversary.board[currentAdvSelection].selected = false;
     }
     game.adversary.board[cardIndex].selected = targetState;
-    currentAdvSelection = cardIndex;
+    if (targetState) currentAdvSelection = cardIndex;
+    else currentAdvSelection = false;
     this.setState({ game, currentAdvSelection });
   };
 
   /**Toogle the selected local card */
   targetLocalCard = cardIndex => {
-    console.log("clicked : " + cardIndex);
     const game = { ...this.state.game };
     let currentLocalSelection = this.state.currentLocalSelection;
     let targetState = !game.local.board[cardIndex].selected;
@@ -219,19 +228,33 @@ class Game extends Component {
       game.local.board[currentLocalSelection].selected = false;
     }
     game.local.board[cardIndex].selected = targetState;
-    currentLocalSelection = cardIndex;
+    if (targetState) currentLocalSelection = cardIndex;
+    else currentLocalSelection = false;
     this.setState({ game, currentLocalSelection });
   };
 
   midClickAction = index => {
     console.log(`clicked in between ${index} and ${index + 1}`);
-    const { currentHandSelection, game } = this.state;
+    const {
+      currentHandSelection,
+      game,
+      currentAdvSelection,
+      currentLocalSelection
+    } = this.state;
+    let defender = 0;
+    console.log(currentAdvSelection);
+    console.log(currentLocalSelection);
     if (currentHandSelection) {
+      if (currentAdvSelection === -1) defender = -1;
+      else if (currentAdvSelection)
+        defender = game.adversary.board[currentAdvSelection].id;
+      else if (currentLocalSelection)
+        defender = game.local.board[currentLocalSelection].id;
       this.send({
         command: "play-card",
         card: game.local.hand[currentHandSelection].id,
         index: index,
-        defender: 0
+        defender: defender
       });
     }
   };
@@ -245,7 +268,8 @@ class Game extends Component {
       game.local.hand[currentHandSelection].selected = false;
     }
     game.local.hand[cardIndex].selected = targetState;
-    currentHandSelection = cardIndex;
+    if (targetState) currentHandSelection = cardIndex;
+    else currentHandSelection = false;
     this.setState({ game, currentHandSelection });
   };
 
@@ -335,8 +359,13 @@ class Game extends Component {
             adversaryTag={game.adversary.tag}
             faceAction={this.setAdvFaceSelect}
             endTurnAction={this.endTurn}
+            selected={game.adversary.selected}
           />
-          <HandArea hand={game.adversary.hand} handSelectAction={null} />
+          <HandArea
+            hand={game.adversary.hand}
+            handSelectAction={null}
+            hoverAction={() => {}}
+          />
           <PlayArea
             adversaryBoard={game.adversary.board}
             adversaryDeck={game.adversary.deck}
@@ -360,6 +389,7 @@ class Game extends Component {
             localMPMax={game.local.manapool}
             localTag={game.local.tag}
             faceAction={this.setLocalFaceSelect}
+            selected={game.local.selected}
           />
         </div>
       );
