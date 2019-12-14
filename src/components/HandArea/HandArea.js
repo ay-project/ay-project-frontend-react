@@ -37,6 +37,7 @@ class HandArea extends Component {
           clickAction={handSelectAction}
           midClickAction={null}
           hoverAction={hoverAction}
+          onBoard={false}
         />
       </div>
     );

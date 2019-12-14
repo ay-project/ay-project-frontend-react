@@ -18,19 +18,26 @@ const styles = theme => ({
 });
 
 class PlayCard extends Component {
-  generateCard = () => {
+  generateCard = (onBoard) => {
     const { card, classes } = this.props;
     if (card.img !== "default") return <div></div>;
-    if (card.type === "creature")
+    if (card.type === "creature") {
+      let atk = card.atk
+      let hp = card.hp
+      if (onBoard) {
+        atk = card.cAtk
+        hp = card.cHP
+      }
       return (
         <div className={classes.textCard}>
           <p>{card.name}</p>
           <p>cost : {card.cost}</p>
-          <p>hp : {card.hp}</p>
-          <p>atk : {card.atk}</p>
+          <p>hp : {hp}</p>
+          <p>atk : {atk}</p>
           <p>family : {card.family}</p>
         </div>
       );
+    }
     if (card.type === "spell")
       return (
         <div>
@@ -46,7 +53,8 @@ class PlayCard extends Component {
       index,
       selected,
       card,
-      hoverAction
+      hoverAction,
+      onBoard
     } = this.props;
     let style = {};
     if (card.img == null) {
@@ -69,7 +77,7 @@ class PlayCard extends Component {
         style={style}
         onMouseEnter={() => hoverAction(card)}
       >
-        {this.generateCard()}
+        {this.generateCard(onBoard)}
       </Button>
     );
   }

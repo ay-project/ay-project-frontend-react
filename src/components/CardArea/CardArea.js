@@ -14,7 +14,7 @@ const styles = theme => ({
 
 class CardArea extends Component {
   generateCardArea = () => {
-    const { clickAction, cards, midClickAction, hoverAction } = this.props;
+    const { clickAction, cards, midClickAction, hoverAction, onBoard } = this.props;
     let board = [];
     console.log(cards);
     if (typeof cards != "number") {
@@ -40,6 +40,7 @@ class CardArea extends Component {
               selected={cards[i].selected}
               card={cards[i]}
               hoverAction={hoverAction}
+              onBoard={onBoard}
             />
           </Grid>
         );
@@ -67,6 +68,7 @@ class CardArea extends Component {
               selected={false}
               card={{ img: null }}
               hoverAction={hoverAction}
+              onBoard={onBoard}
             />
           </Grid>
         );

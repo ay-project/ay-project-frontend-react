@@ -57,6 +57,7 @@ class PlayArea extends Component {
                   clickAction={adversaryCardSelectAction}
                   midClickAction={null}
                   hoverAction={hoverAction}
+                  onBoard={true}
                 />
               </Grid>
               <Grid item xs={1} className={classes.grid}>
@@ -72,6 +73,7 @@ class PlayArea extends Component {
                   clickAction={localCardSelectAction}
                   midClickAction={midClickAction}
                   hoverAction={hoverAction}
+                  onBoard={true}
                 />
               </Grid>
               <Grid item xs={1} className={classes.grid}>
