@@ -72,13 +72,14 @@ class Game extends Component {
   };
 
   routeMessage = message => {
-    if (message.type == "error" || message.command == "error") {
+    console.log("message", message);
+    if (message.type === "error" || message.command === "error") {
       // error
       console.log("ERROR " + JSON.stringify(message));
     } else if (message.issuer === "sys") {
       // sys
       console.log("SYS " + message);
-    } else if (message.issuer == "authenticator") {
+    } else if (message.issuer === "authenticator") {
       //
       console.log(message);
     } else if (message.issuer === "matchmaker") {
@@ -108,8 +109,10 @@ class Game extends Component {
         this.updateGame(message.message);
       } else if (message.command === "update-board") {
         // update boards
+        this.updateBoard(message.message);
       } else if (message.command === "update-hp") {
         // update players HP
+        this.updateAdvHP(message.message.adversary);
       } else if (message.command === "update-mana") {
         // update players mana
       } else if (message.command === "end-game") {
@@ -157,7 +160,7 @@ class Game extends Component {
   updateAdvHP = value => {
     console.log("update hp");
     const game = { ...this.state.game };
-    game.adversary.hp += value;
+    game.adversary.hp = value;
     this.setState({ game });
   };
 
@@ -185,6 +188,13 @@ class Game extends Component {
     this.setState({ game });
   };
 
+  updateBoard = data => {
+    const game = { ...this.state.game };
+    game.local.board = Player.createCards(data.local);
+    game.adversary.board = Player.createCards(data.adversary);
+    this.setState({ game });
+  };
+
   /**Action when face is targetted */
   setAdvFaceSelect = () => {
     const game = { ...this.state.game };
@@ -197,6 +207,7 @@ class Game extends Component {
     if (targetState) currentAdvSelection = -1;
     else currentAdvSelection = false;
     this.setState({ game, currentAdvSelection });
+    this.handleAttack(currentAdvSelection, this.state.currentLocalSelection);
   };
 
   /**Action when face is targetted */
@@ -217,6 +228,7 @@ class Game extends Component {
     if (targetState) currentAdvSelection = cardIndex;
     else currentAdvSelection = false;
     this.setState({ game, currentAdvSelection });
+    this.handleAttack(currentAdvSelection, this.state.currentLocalSelection);
   };
 
   /**Toogle the selected local card */
@@ -231,7 +243,14 @@ class Game extends Component {
     if (targetState) currentLocalSelection = cardIndex;
     else currentLocalSelection = false;
     this.setState({ game, currentLocalSelection });
+    this.handleAttack(this.state.currentAdvSelection, currentLocalSelection);
   };
+
+  // command: partials[0],
+  // gameId: game.gameId,
+  // playerId: currentPlayer.id,
+  // defender: defender,
+  // attacker: attacker
 
   midClickAction = index => {
     console.log(`clicked in between ${index} and ${index + 1}`);
@@ -253,8 +272,12 @@ class Game extends Component {
       this.send({
         command: "play-card",
         card: game.local.hand[currentHandSelection].id,
-        index: index,
-        defender: defender
+        index,
+        defender
+      });
+      this.setState({
+        currentAdvSelection: false,
+        currentLocalSelection: false
       });
     }
   };
@@ -298,6 +321,37 @@ class Game extends Component {
       swaps: swaps
     });
     this.setState({ waitingSwapDialog: true });
+  };
+
+  handleAttack = (currentAdvSelection, currentLocalSelection) => {
+    console.log(
+      "handleAttack",
+      "currentAdvSelection",
+      currentAdvSelection,
+      "currentLocalSelection",
+      currentLocalSelection
+    );
+    const { game } = this.state;
+    if (
+      currentAdvSelection !== false &&
+      currentLocalSelection !== false &&
+      currentLocalSelection !== -1
+    ) {
+      const defender =
+        currentAdvSelection !== -1
+          ? game.adversary.board[currentAdvSelection].uid
+          : -1;
+      const attacker = game.local.board[currentLocalSelection].uid;
+      this.send({
+        command: "attack",
+        attacker,
+        defender
+      });
+      this.setState({
+        currentAdvSelection: false,
+        currentLocalSelection: false
+      });
+    }
   };
 
   updatePreview = previewedCard => {

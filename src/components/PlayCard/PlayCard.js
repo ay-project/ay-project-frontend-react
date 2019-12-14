@@ -18,16 +18,12 @@ const styles = theme => ({
 });
 
 class PlayCard extends Component {
-  generateCard = (onBoard) => {
+  generateCard = onBoard => {
     const { card, classes } = this.props;
     if (card.img !== "default") return <div></div>;
     if (card.type === "creature") {
-      let atk = card.atk
-      let hp = card.hp
-      if (onBoard) {
-        atk = card.cAtk
-        hp = card.cHP
-      }
+      let atk = card.cAtk;
+      let hp = card.cHP;
       return (
         <div className={classes.textCard}>
           <p>{card.name}</p>
