@@ -1,5 +1,6 @@
 class Card {
   constructor(data) {
+
     this.id = data.uid;
     this.name = data.name;
     this.img =
@@ -10,8 +11,8 @@ class Card {
     if (data.type === "creature") {
       this.hp = data.specs.HP;
       this.atk = data.specs.Atk;
-      this.cHP = data.specs.HP;
-      this.cAtk = data.specs.Atk;
+      this.cHP = (data.hasOwnProperty('cHP')) ? data.cHP : data.specs.HP;
+      this.cAtk = (data.hasOwnProperty('cAtk')) ? data.cAtk : data.specs.Atk;
       this.abilities = data.specs.abilities;
       this.family = data.specs.hasOwnProperty("family")
         ? data.specs.family

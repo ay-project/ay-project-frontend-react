@@ -190,6 +190,8 @@ class Game extends Component {
 
   updateBoard = data => {
     const game = { ...this.state.game };
+    console.log(data)
+    console.log("asdasdasdadadasd")
     game.local.board = Player.createCards(data.local);
     game.adversary.board = Player.createCards(data.adversary);
     this.setState({ game });
@@ -347,6 +349,13 @@ class Game extends Component {
         attacker,
         defender
       });
+      // Force unselect all boards
+      game.local.board[currentLocalSelection].selected = false
+      if (currentAdvSelection !== -1)
+        game.adversary.board[currentAdvSelection].selected = false
+      else
+        game.adversary.selected = false
+
       this.setState({
         currentAdvSelection: false,
         currentLocalSelection: false
