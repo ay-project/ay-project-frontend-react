@@ -40,7 +40,9 @@ class PlayArea extends Component {
       localDeck,
       adversaryCardSelectAction,
       localCardSelectAction,
-      midClickAction
+      midClickAction,
+      hoverAction,
+      previewedCard
     } = this.props;
 
     return (
@@ -54,6 +56,8 @@ class PlayArea extends Component {
                   cards={adversaryBoard}
                   clickAction={adversaryCardSelectAction}
                   midClickAction={null}
+                  hoverAction={hoverAction}
+                  onBoard={true}
                 />
               </Grid>
               <Grid item xs={1} className={classes.grid}>
@@ -68,6 +72,8 @@ class PlayArea extends Component {
                   cards={localBoard}
                   clickAction={localCardSelectAction}
                   midClickAction={midClickAction}
+                  hoverAction={hoverAction}
+                  onBoard={true}
                 />
               </Grid>
               <Grid item xs={1} className={classes.grid}>
@@ -78,7 +84,7 @@ class PlayArea extends Component {
           </Grid>
           <Grid item xs className={classes.preview}>
             {" "}
-            <CardPreview cardDetail="https://s3.us-east-2.amazonaws.com/ay-dev-assests/cards/phcard.png" />
+            <CardPreview card={previewedCard} />
           </Grid>
         </Grid>
       </div>

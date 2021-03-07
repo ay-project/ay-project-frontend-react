@@ -13,11 +13,13 @@ const styles = theme => ({
 });
 
 class CardArea extends Component {
-  generateCardArea = (board, clickAction, midClickAction) => {
-    let cards = [];
-    if (typeof board != "undefined") {
+  generateCardArea = () => {
+    const { clickAction, cards, midClickAction, hoverAction, onBoard } = this.props;
+    let board = [];
+    console.log(cards);
+    if (typeof cards != "number") {
       if (midClickAction !== null) {
-        cards.push(
+        board.push(
           <Grid item xs>
             <Button
               fullWidth
@@ -29,19 +31,21 @@ class CardArea extends Component {
           </Grid>
         );
       }
-      for (let i = 0; i < board.length; i++) {
-        cards.push(
+      for (let i = 0; i < cards.length; i++) {
+        board.push(
           <Grid item xs={1}>
             <PlayCard
               clickAction={clickAction}
               index={i}
-              selected={board[i].selected}
-              card={board[i]}
+              selected={cards[i].selected}
+              card={cards[i]}
+              hoverAction={hoverAction}
+              onBoard={onBoard}
             />
           </Grid>
         );
         if (midClickAction !== null) {
-          cards.push(
+          board.push(
             <Grid item xs>
               <Button
                 fullWidth
@@ -55,20 +59,22 @@ class CardArea extends Component {
         }
       }
     } else {
-      for (let i = 0; i < board; i++) {
-        cards.push(
+      for (let i = 0; i < cards; i++) {
+        board.push(
           <Grid item xs={1}>
             <PlayCard
               clickAction={() => {}}
               index={i}
               selected={false}
               card={{ img: null }}
+              hoverAction={hoverAction}
+              onBoard={onBoard}
             />
           </Grid>
         );
       }
     }
-    return cards;
+    return board;
   };
 
   render() {

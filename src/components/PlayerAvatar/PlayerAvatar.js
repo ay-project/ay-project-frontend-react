@@ -20,7 +20,11 @@ class PlayerAvater extends Component {
   }
 
   render() {
-    const { classes, clickAction, tag, index } = this.props;
+    const { classes, clickAction, tag, index, selected } = this.props;
+    let style = {};
+    if (selected) {
+      style.filter = "brightness(125%)";
+    }
     return (
       <Button
         fullWidth
@@ -28,6 +32,7 @@ class PlayerAvater extends Component {
         onClick={() => {
           clickAction(index);
         }}
+        style={style}
       >
         {tag}
       </Button>

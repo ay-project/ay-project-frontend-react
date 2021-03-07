@@ -9,15 +9,15 @@ const styles = theme => ({
 
 class StatusBar extends Component {
   render() {
-    const { classes, hp, mp } = this.props;
+    const { classes, hp, mp, hpMax, mpMax } = this.props;
     return (
       <div className={classes.root}>
         <Grid container spacing={16} direction="column">
           <Grid item xs>
-            <StatusGauge type={"hp"} value={hp} maxValue={30} />
+            <StatusGauge type={"hp"} value={hp} maxValue={hpMax} />
           </Grid>
           <Grid item xs>
-            <StatusGauge type={"mp"} value={mp} maxValue={10} />
+            <StatusGauge type={"mp"} value={mp} maxValue={mpMax} />
           </Grid>
         </Grid>
       </div>

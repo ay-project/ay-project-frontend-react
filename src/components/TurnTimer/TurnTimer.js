@@ -54,7 +54,7 @@ class TurnTimer extends Component {
       self.updateTimer(self.count);
       if (self.count == this.totaltime) {
         clearInterval(self.interval_counter);
-        this.props.endAction();
+        //  this.props.endAction();
       }
     }, 1000);
   };
