@@ -20,8 +20,15 @@ class HeroPower extends Component {
   }
 
   render() {
-    const { classes, clickAction } = this.props;
-    return <Button fullWidth className={classes.root} onClick={clickAction} />;
+    const { classes, clickAction, powerIsUsed } = this.props;
+    let style = {};
+    if (powerIsUsed) {
+      style.filter = "brightness(10%)";
+    }
+    else {
+      style.filter = "brightness(100%)";
+    }
+    return <Button fullWidth className={classes.root} onClick={clickAction} style={style} />;
   }
 }
 

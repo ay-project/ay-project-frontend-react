@@ -29,19 +29,21 @@ class BottomStatusBar extends Component {
     const {
       classes,
       faceAction,
+      powerAction,
       localHP,
       localMP,
       localHPMax,
       localMPMax,
       localTag,
-      selected
+      selected,
+      powerIsUsed
     } = this.props;
     return (
       <div>
         <AppBar position="static" className={classes.toolbar} elevation={0}>
           <Grid container justify="center">
             <Grid item xs={3} style={{ paddingRight: 5 }}>
-              <HeroPower clickAction={faceAction} />
+              <HeroPower clickAction={powerAction} powerIsUsed={powerIsUsed} />
             </Grid>
             <Grid item xs={6}>
               <PlayerAvatar

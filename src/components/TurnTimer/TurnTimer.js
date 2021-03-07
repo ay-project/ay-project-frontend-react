@@ -7,9 +7,9 @@ const styles = theme => ({});
 class TurnTimer extends Component {
   constructor(props) {
     super(props);
+    this.totaltime = this.props.time;
     this.resetTimer();
     this.myCounter();
-    this.totaltime = this.props.time;
   }
 
   resetTimer = () => {

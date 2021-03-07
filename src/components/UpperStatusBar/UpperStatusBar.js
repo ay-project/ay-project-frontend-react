@@ -36,6 +36,7 @@ class UpperStatusBar extends Component {
       adversaryHPMax,
       adversaryMPMax,
       adversaryTag,
+      gameTimer,
       selected
     } = this.props;
     return (
@@ -61,7 +62,7 @@ class UpperStatusBar extends Component {
               <EndTurnSquare clickAction={endTurnAction} />
             </Grid>
             <Grid item xs style={{ padding: 5 }}>
-              <TurnTimer endAction={endTurnAction} time={10} />
+              <TurnTimer endAction={endTurnAction} time={gameTimer}/>
             </Grid>
           </Grid>
         </AppBar>

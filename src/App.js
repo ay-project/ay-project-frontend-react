@@ -6,7 +6,7 @@ import { instanceOf } from "prop-types";
 import axios from "axios";
 import GameContainer from "./containers/GameContainer.js";
 
-axios.defaults.baseURL = "http://api_service:3002";
+axios.defaults.baseURL = "http://172.17.218.145:3002";
 //axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 //axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 //axios.defaults.headers.post["Content-Type"] = "application/json";

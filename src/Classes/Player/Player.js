@@ -13,6 +13,7 @@ class Player {
     this.manapool = 0;
     this.mp = 0;
     this.selected = false;
+    this.job = data.job
   }
 
   static createCards(cards) {

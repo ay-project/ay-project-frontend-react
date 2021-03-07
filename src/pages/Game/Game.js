@@ -25,6 +25,8 @@ class Game extends Component {
       currentLocalSelection: false,
       currentAdvSelection: false,
       currentHandSelection: false,
+      powerIsSelected: false,
+      powerIsUsed: false,
       swapDialogOpened: true,
       connected: false,
       waitingSwapDialog: false,
@@ -34,7 +36,7 @@ class Game extends Component {
   }
 
   gameConnect = (gameToken, connectionToken) => {
-    let connection = new WebSocket("ws://main_service:8084");
+    let connection = new WebSocket("ws://172.17.218.145:8084");
     this.setState({ connection });
     // listen to onmessage event
     connection.onmessage = evt => {
@@ -129,7 +131,9 @@ class Game extends Component {
     game.local.hand = Player.createCards(data.hand);
     game.local.board = Player.createCards(data.localBoard);
     game.adversary.board = Player.createCards(data.adversaryBoard);
-    this.setState({ game });
+    game.gameTimer = 30;
+    let powerIsUsed = false
+    this.setState({ game, powerIsUsed });
   };
 
   handleStartTurnAdversary = data => {
@@ -140,6 +144,7 @@ class Game extends Component {
     game.adversary.hand = data.hand;
     game.local.board = Player.createCards(data.localBoard);
     game.adversary.board = Player.createCards(data.adversaryBoard);
+    game.gameTimer = 30;
     this.setState({ game });
   };
 
@@ -191,7 +196,6 @@ class Game extends Component {
   updateBoard = data => {
     const game = { ...this.state.game };
     console.log(data)
-    console.log("asdasdasdadadasd")
     game.local.board = Player.createCards(data.local);
     game.adversary.board = Player.createCards(data.adversary);
     this.setState({ game });
@@ -199,26 +203,50 @@ class Game extends Component {
 
   /**Action when face is targetted */
   setAdvFaceSelect = () => {
+    console.log("Adversary face target")
     const game = { ...this.state.game };
     let currentAdvSelection = this.state.currentAdvSelection;
     let targetState = !game.adversary.selected;
+
     if (currentAdvSelection !== false && currentAdvSelection !== -1) {
       game.adversary.board[currentAdvSelection].selected = false;
     }
+
     game.adversary.selected = targetState;
+
     if (targetState) currentAdvSelection = -1;
     else currentAdvSelection = false;
+
     this.setState({ game, currentAdvSelection });
-    this.handleAttack(currentAdvSelection, this.state.currentLocalSelection);
+
+    if (this.state.currentLocalSelection !== false)
+      this.handleAttack(currentAdvSelection, this.state.currentLocalSelection);
+    else if (this.state.currentHandSelection !== false)
+      this.handleSpell(currentAdvSelection);
+    else if (this.state.powerIsSelected !== false)
+      this.handleHeroPower(currentAdvSelection);
   };
 
   /**Action when face is targetted */
   setLocalFaceSelect = () => {
+    const game = { ...this.state.game };
     console.log("clicked local");
+  };
+
+  setLocalPowerSelect = () => {
+    const game = { ...this.state.game };
+    console.log(game)
+    if (game.local.job.name == 'Dragoon') {
+      this.handleHeroPower()
+      return
+    }
+    let powerIsSelected =  !this.state.powerIsSelected;
+    this.setState({ powerIsSelected });
   };
 
   /**Toogle the selected adversary card */
   targetAdversaryCard = cardIndex => {
+    console.log("Adversary target", cardIndex)
     const game = { ...this.state.game };
     let currentAdvSelection = this.state.currentAdvSelection;
     let targetState = !game.adversary.board[cardIndex].selected;
@@ -230,11 +258,18 @@ class Game extends Component {
     if (targetState) currentAdvSelection = cardIndex;
     else currentAdvSelection = false;
     this.setState({ game, currentAdvSelection });
-    this.handleAttack(currentAdvSelection, this.state.currentLocalSelection);
+    
+    if (this.state.currentLocalSelection !== false)
+      this.handleAttack(currentAdvSelection, this.state.currentLocalSelection);
+    else if (this.state.currentHandSelection !== false)
+      this.handleSpell(currentAdvSelection);
+    else if (this.state.powerIsSelected !== false)
+      this.handleHeroPower(currentAdvSelection);
   };
 
   /**Toogle the selected local card */
   targetLocalCard = cardIndex => {
+    console.log("Local target", cardIndex)
     const game = { ...this.state.game };
     let currentLocalSelection = this.state.currentLocalSelection;
     let targetState = !game.local.board[cardIndex].selected;
@@ -288,6 +323,7 @@ class Game extends Component {
     console.log("clicked : " + cardIndex);
     const game = { ...this.state.game };
     let currentHandSelection = this.state.currentHandSelection;
+    let currentLocalSelection = this.state.currentLocalSelection;
     let targetState = !game.local.hand[cardIndex].selected;
     if (currentHandSelection !== false) {
       game.local.hand[currentHandSelection].selected = false;
@@ -295,7 +331,11 @@ class Game extends Component {
     game.local.hand[cardIndex].selected = targetState;
     if (targetState) currentHandSelection = cardIndex;
     else currentHandSelection = false;
-    this.setState({ game, currentHandSelection });
+    if (currentLocalSelection !== false) {
+      game.local.board[currentLocalSelection].selected = false;
+      currentLocalSelection = false
+    }
+    this.setState({ game, currentHandSelection, currentLocalSelection });
   };
 
   swapCardSelectAction = cardIndex => {
@@ -350,17 +390,60 @@ class Game extends Component {
         defender
       });
       // Force unselect all boards
-      game.local.board[currentLocalSelection].selected = false
-      if (currentAdvSelection !== -1)
-        game.adversary.board[currentAdvSelection].selected = false
-      else
-        game.adversary.selected = false
-
-      this.setState({
-        currentAdvSelection: false,
-        currentLocalSelection: false
-      });
+      this.forceUnselectAll(currentAdvSelection)
     }
+  };
+
+  forceUnselectAll = (currentAdvSelection) => {
+    // Force unselect all boards
+    const { game, currentLocalSelection  } = this.state;
+    if (currentLocalSelection !== -1 && currentLocalSelection !== false)
+      game.local.board[currentLocalSelection].selected = false
+    if (currentAdvSelection !== -1)
+      game.adversary.board[currentAdvSelection].selected = false
+    else
+      game.adversary.selected = false
+
+    this.setState({
+      currentAdvSelection: false,
+      currentLocalSelection: false,
+      currentHandSelection: false
+    });
+  }
+
+  handleSpell = (currentAdvSelection) => {
+    const { game, currentHandSelection  } = this.state;
+    if (game.local.hand[currentHandSelection].type != 'spell') {
+      console.log("WTF");
+      return
+    }
+    const defender =
+      currentAdvSelection !== -1
+        ? game.adversary.board[currentAdvSelection].uid
+        : 'adversary';
+    this.send({
+      command: "play-card",
+      card: game.local.hand[currentHandSelection].id,
+      index : 0,
+      defender
+    });
+    this.forceUnselectAll(currentAdvSelection)
+  };
+
+  handleHeroPower = (currentAdvSelection=false) => {
+    const { game, currentHandSelection  } = this.state;
+    let defender = ''
+    if (currentAdvSelection !== false){
+      defender = currentAdvSelection !== -1
+        ? game.adversary.board[currentAdvSelection].uid
+        : 'adversary';
+        this.forceUnselectAll(currentAdvSelection)
+      }
+    this.send({
+      command: "hero-power",
+      defender: currentAdvSelection
+    });
+    this.setState({powerIsUsed: true})
   };
 
   updatePreview = previewedCard => {
@@ -391,7 +474,8 @@ class Game extends Component {
       connected,
       waitingSwapDialog,
       waitingTurnDialog,
-      previewedCard
+      previewedCard,
+      powerIsUsed
     } = this.state;
     if (!connected || typeof game == "undefined") return <LoadingScreen />;
     else
@@ -423,6 +507,7 @@ class Game extends Component {
             faceAction={this.setAdvFaceSelect}
             endTurnAction={this.endTurn}
             selected={game.adversary.selected}
+            gameTimer={game.gameTimer}
           />
           <HandArea
             hand={game.adversary.hand}
@@ -452,6 +537,8 @@ class Game extends Component {
             localMPMax={game.local.manapool}
             localTag={game.local.tag}
             faceAction={this.setLocalFaceSelect}
+            powerAction={this.setLocalPowerSelect}
+            powerIsUsed={powerIsUsed}
             selected={game.local.selected}
           />
         </div>
